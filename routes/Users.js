@@ -2,6 +2,9 @@ const router = require('express').Router();
 const apiUrl = process.env.API_URL
 const {getUsers, getUserById, getUserAgeById, SignUp, SignIn, getUserInterests, updateUser, deleteUser, addInterests} = require('../controllers/Users')
 
+router.get(`${apiUrl}/`, ()=>{
+    res.send('ola')
+})
 
 router.get(`${apiUrl}/users`, getUsers)
 

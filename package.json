@@ -1,5 +1,5 @@
 {
-  "name": "api",
+  "name": "Matchmaker-api",
   "version": "1.0.0",
   "description": "API for Matchmaker APP",
   "main": "app.js",
