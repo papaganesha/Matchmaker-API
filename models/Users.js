@@ -98,6 +98,7 @@ const UserSchema = new Schema({
             matchDate: { type: Date, default: null }
         },
     ],
+    pictures: { type: List, default: null },
     firstLogin: { type: Boolean, default: true},
     isVerified: { type: Boolean, default: false}
 })
