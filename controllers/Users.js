@@ -1,4 +1,4 @@
-const User = require('../../Matchmaker-Client/Users')
+const User = require('../models/Users')
 const bcrypt = require('bcrypt')
 const moment = require('moment')
 
