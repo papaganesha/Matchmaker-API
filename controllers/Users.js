@@ -1,4 +1,4 @@
-const User = require('../models/Users')
+const User = require('../../Matchmaker-Client/Users')
 const bcrypt = require('bcrypt')
 const moment = require('moment')
 
@@ -99,13 +99,14 @@ controller.SignIn = async (req, res) => {
             })
             //CASO COMPARAÇÃO PROCEDA
         } else {
-            console.log(emailOk)
+            //console.log(emailOk)
             // CRIA JWT
             const token = user.generateToken()
             // ENVIA REQUISIÇÃO COM JWT 
             res.status(200).json({
                 message: `${emailOk.fName} logado com sucesso`,
                 token: token,
+                id: emailOk._id,
                 success: true
             })
         }
