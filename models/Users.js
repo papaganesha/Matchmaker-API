@@ -113,35 +113,15 @@ UserSchema.pre("save",
     next()    
 })
 
-
-
   
 UserSchema.methods = {
-    returnPass() {
-        return this.password
-    },
-    async findByCredentials (email, password){
-        const user = await User.findOne({ email })
-    
-        if (!user) {
-            throw new Error('Unable to login')
-        }
-    
-        const isMatch = await bcrypt.compare(password, user.password)
-    
-        if (!isMatch) {
-            throw new Error('Unable to login')
-        }
-    
-        return user
-    },
     compareHash(hash) {
         console.log(bcrypt.compare(hash, this.password))
         return bcrypt.compare(hash, this.password)
     },
   
-    generateToken() {
-      return jwt.sign({ id: this._id }, "secret", {
+    generateToken(id) {
+      return jwt.sign({ id: id }, "secret", {
         expiresIn: 86400
       })
     }

@@ -1,6 +1,7 @@
 const User = require('../models/Users')
 const bcrypt = require('bcrypt')
 const moment = require('moment')
+var mongoose = require('mongoose');
 
 
 const controller = {}
@@ -101,12 +102,16 @@ controller.SignIn = async (req, res) => {
         } else {
             //console.log(emailOk)
             // CRIA JWT
-            const token = user.generateToken()
+            const token = user.generateToken(emailOk._id)
             // ENVIA REQUISIÇÃO COM JWT 
+            console.log(emailOk._id)
             res.status(200).json({
                 message: `${emailOk.fName} logado com sucesso`,
+                user:{
+                    id: emailOk._id,
+                    email: emailOk.email
+                },
                 token: token,
-                id: emailOk._id,
                 success: true
             })
         }
@@ -187,9 +192,7 @@ controller.getUsers = async (req, res) => {
 }
 
 controller.getUserById = async (req, res) => {
-    const {
-        id
-    } = req.params
+    var id = req.userId
     const user = await User.findById(id)
     if (!user) {
         res.status(500).json({
@@ -204,73 +207,78 @@ controller.getUserById = async (req, res) => {
     }
 }
 
-controller.getUserAgeById = async (req, res) => {
-    const {
-        id
-    } = req.params
-    const user = await User.findById(id)
-
-
-    if (!user) {
+controller.getUserAge = async (req, res) => {
+    var id = req.userId
+    let {
+        AgeFromDateString
+    } = require('age-calculator')
+    
+    await User.findById(id).then(user =>{
+        if (!user) {
+            res.status(500).json({
+                error: 'Usuario não existente',
+                success: false
+            })
+        } else {
+            var date = user.birthDate
+            var EditedDob = moment(date, "DD-MM-YYYY").format('YYYY-MM-DD')
+        
+            let ageFromString = new AgeFromDateString(EditedDob).age;
+    
+            res.status(200).json({
+                data: ageFromString,
+                success: true
+            })
+        }
+    }).catch(err => {
         res.status(500).json({
-            error: 'Usuario não existente',
-            success: true
+            error: err,
+            success: false
         })
-    } else {
+    })
 
-        let {
-            AgeFromDateString
-        } = require('age-calculator')
 
-        var date = user.birthDate
-        var EditedDob = moment(date, "DD-MM-YYYY").format('YYYY-MM-DD')
-
-        //console.log(EditedDob)
-
-        let ageFromString = new AgeFromDateString(EditedDob).age;
-
-        res.status(200).json({
-            data: ageFromString,
-            success: true
-        })
-    }
 }
 
 
 controller.getUserInterests = async (req, res) => {
-    const {
-        id
-    } = req.params
-    console.log(id)
-    //PEGA USUARIO COM EMAIL
-    const user = await User.findOne({
-        _id: id
-    })
-    //SE O USUARIO NAO EXISTIR
-    if (!user) {
-        res.status(500).json({
-            error: 'Email não cadastrado',
-            success: false
-        })
-    } else {
-        if (user.interests.length == 0) {
-            res.status(201).json({
-                error: 'Usuário não possui interesses cadastrados',
+    var id = req.userId
+    console.log(id, typeof(id)) 
+    await User.findById(id)
+    .then(user => {
+        console.log(user)
+        if (!user) {
+            res.status(500).json({
+                error: 'Email não cadastrado',
                 success: false
             })
         } else {
-            res.status(201).json({
-                data: user.interests,
-                success: true
-            })
+            if (user.interests.length > 0) {
+                res.status(201).json({
+                    data: user.interests,
+                    success: true
+                })
+
+            } else {
+                res.status(500).json({
+                    error: 'Usuário não possui interesses cadastrados',
+                    success: false
+                })
+            }
         }
-    }
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(500).json({
+            error: err,
+            success: false
+        })
+    })
 }
 
 controller.addInterests = async (req, res) => {
-    const {
-        id
-    } = req.params
+    var id = req.userId
+    console.log(id)
     const {
         interestsArray
     } = req.body
@@ -278,25 +286,38 @@ controller.addInterests = async (req, res) => {
     let checkAdd = 0
 
     for (let i of interestsArray) {
-        let user = await User.findByIdAndUpdate(id, {
+        console.log(i.interestName)
+        await User.findByIdAndUpdate(id, {
             $push: {
                 interests: {
                     interestName: i.interestName
                 }
             }
-        }).then(result => checkAdd++).catch(err => checkAdd--)
+        }, { new: true }
+        ).then(result => {
+            console.log(result)
+            console.log("++")
+            checkAdd++
+        }).catch(err => {
+            console.log(err)
+            console.log("--")
+            checkAdd--
+        })
     }
 
     if (checkAdd > interestsArray.length) {
+        console.log('here')
         res.status(201).json({
             error: 'Erro durante cadastro de Interesses',
             success: false
         })
     } else {
-        user = await User.findById(id)
-        res.status(201).json({
-            data: user.interests,
-            success: true
+        await User.findById(id).then(user => {
+            console.log(user)
+            res.status(201).json({
+                message: 'Interesses adicionados',
+                success: true
+            })
         })
     }
 }
