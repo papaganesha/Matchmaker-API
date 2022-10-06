@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const isAuth = require('../middlewares/AuthenticationHandler')
 const apiUrl = process.env.API_URL
-const {getUsers, getUserById, getUserAge, SignUp, SignIn, getUserInterests, updateUser, deleteUser, addInterests, addLike} = require('../controllers/Users')
+const {getUsers, getUserById, getUserAge, SignUp, SignIn, getUserInterests, updateUser, deleteUser, addInterests, deleteInterest, addLike} = require('../controllers/Users')
 
 router.get(`${apiUrl}/`, (req, res)=>{
     res.send('ola')
@@ -29,6 +29,8 @@ router.post(`${apiUrl}/like`, isAuth, addLike)
 router.put(`${apiUrl}/userupdate/:id`, updateUser)
 
 router.delete(`${apiUrl}/userdelete/:id`, deleteUser)
+
+router.delete(`${apiUrl}/interest`, isAuth, deleteInterest)
 
 
 
