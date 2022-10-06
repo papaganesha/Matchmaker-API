@@ -88,8 +88,8 @@ const UserSchema = new Schema({
 
     likes: [ 
         {   
-            matchId: { type: String, default: null },
-            likedAt: { type: Date, default: null }
+            matchId: { type: String },
+            likedAt: { type: Date, default: Date.now}
         },
     ],
     matchs: [

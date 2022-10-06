@@ -276,6 +276,8 @@ controller.getUserInterests = async (req, res) => {
     })
 }
 
+
+
 controller.addInterests = async (req, res) => {
     var id = req.userId
     console.log(id)
@@ -307,7 +309,7 @@ controller.addInterests = async (req, res) => {
 
     if (checkAdd > interestsArray.length) {
         console.log('here')
-        res.status(201).json({
+        res.status(500).json({
             error: 'Erro durante cadastro de Interesses',
             success: false
         })
@@ -323,7 +325,138 @@ controller.addInterests = async (req, res) => {
 }
 
 //DELETAR INTERESSES
+controller.deleteInterest = async (req, res) => {
+    var id = req.userId
+    console.log(id)
+    const {
+        interestName
+    } = req.body
 
+    let checkAdd = 0
+
+    for (let i of interestsArray) {
+        console.log(i.interestName)
+        await User.findByIdAndUpdate(id, {
+            $push: {
+                interests: {
+                    interestName: i.interestName
+                }
+            }
+        }, { new: true }
+        ).then(result => {
+            console.log(result)
+            console.log("++")
+            checkAdd++
+        }).catch(err => {
+            console.log(err)
+            console.log("--")
+            checkAdd--
+        })
+    }
+
+    if (checkAdd > interestsArray.length) {
+        console.log('here')
+        res.status(500).json({
+            error: 'Erro durante cadastro de Interesses',
+            success: false
+        })
+    } else {
+        await User.findById(id).then(user => {
+            console.log(user)
+            res.status(201).json({
+                message: 'Interesses adicionados',
+                success: true
+            })
+        })
+    }
+}
+
+
+//DAR LIKE
+controller.addLike = async (req, res) => {
+    var id = req.userId
+    var { matchId } = req.body
+
+    //CHECAR USUARIO COM ID SE ELE DEU LIKE EM VOCE
+    //CASO SIM DISPARAR MATCH E ADICIONAR DIRETO EM MATCHS
+    //CASO NÃO ADICIONAR DIRETO EM LIKES
+    //BUSCANDO USUARIO CURTIDO
+    await User.findById(matchId)
+    //EM CASO DE SUCESSO NA BUSCA
+    .then(async (result) => {
+        //VARIAVEL DE CHECAGEM DE MATCH
+        let isMatch = false
+        //LOOP EM TODOS OS LIKES DO USUARIO ENCONTRADO
+        for(i in result.likes){
+            //CHECA SE USUARIO POSSUI O LIKE EM VOCE
+            if(result.likes[i].matchId === id){
+                //SETA MATCH COMO TRUE
+                isMatch = true
+            }
+        }
+        
+        //FLUXO CASO USUARIO NÃO TENHA LIKE EM VOCE
+        if(!isMatch){
+            await User.findByIdAndUpdate(id, {
+                $push: {
+                    likes: {
+                        matchId: matchId
+                    }
+                }
+            }, { new: true }
+            ).then(result => {
+                res.status(201).json({
+                    message: 'Like adicionado',
+                    success: true,
+                    isMatch: false
+                    
+                })
+            }).catch(err => {
+                console.log(err)
+                res.status(500).json({
+                    error: err,
+                    success: false
+                })
+            })
+
+        //FLUXO CASO USUARIO TENHA LIKE EM VOCE // MATCH
+        }else{
+            await User.findByIdAndUpdate(id, {
+                $push: {
+                    likes: {
+                        matchId: matchId
+                    }
+                }
+            }, { new: true }
+            ).then(result => {
+                //CHAMAR METODO QUE CADASTRA O MATCH PARA AMBOS USUARIOS
+                res.status(201).json({
+                    message: 'É um match',
+                    success: true,
+                    isMatch: true
+                })
+            }).catch(err => {
+                console.log(err)
+                res.status(500).json({
+                    error: err,
+                    success: false
+                })
+            })  
+        }
+        
+        
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({
+            error: err,
+            success: false
+        })
+
+    })
+
+
+
+}
 
 //VER LIKES PELO ID DO USER
 
