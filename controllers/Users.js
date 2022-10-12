@@ -100,48 +100,56 @@ controller.SignUp = async (req, res) => {
 
 controller.SignIn = async (req, res) => {
   const { email, password } = req.body;
-
-  const user = new User({
-    email: email,
-    password: password,
-  });
-
-  //PEGA USUARIO COM EMAIL
-  const emailOk = await User.findOne({
-    email: email,
-  });
-  //SE O USUARIO NAO EXISTIR
-  if (!emailOk) {
-    res.status(500).json({
-      error: "Email não cadastrado",
-      success: false,
+  if(email && password){
+    const user = new User({
+      email: email,
+      password: password,
     });
-    //CASO USUARIO EXISTA
-  } else {
-    //VERIFICA O PASSWORDHASH ENCONTRADO E COMPARA COM O PASSWORD INSERIDO
-    const isMatch = await bcrypt.compare(password, emailOk.password);
-
-    //CASO COMPARAÇÃO DE INVALIDA
-    if (!isMatch) {
+  
+    //PEGA USUARIO COM EMAIL
+    const emailOk = await User.findOne({
+      email: email,
+    })
+    
+    //SE O USUARIO NAO EXISTIR
+    if (!emailOk) {
       res.status(500).json({
-        error: "Senha inválida, digite novamente",
+        error: "Email não cadastrado",
         success: false,
       });
-      //CASO COMPARAÇÃO PROCEDA
+      //CASO USUARIO EXISTA
     } else {
-      //console.log(emailOk)
-      // CRIA JWT
-      const token = user.generateToken(emailOk._id);
-      // ENVIA REQUISIÇÃO COM JWT
-      console.log(emailOk._id);
-      res.status(200).json({
-        message: `${emailOk.fName} logado com sucesso`,
-        user: emailOk,
-        token: token,
-        success: true,
-      });
+      //VERIFICA O PASSWORDHASH ENCONTRADO E COMPARA COM O PASSWORD INSERIDO
+      const isMatch = await bcrypt.compare(password, emailOk.password);
+  
+      //CASO COMPARAÇÃO DE INVALIDA
+      if (!isMatch) {
+        res.status(500).json({
+          error: "Senha inválida, digite novamente",
+          success: false,
+        });
+        //CASO COMPARAÇÃO PROCEDA
+      } else {
+        //console.log(emailOk)
+        // CRIA JWT
+        const token = user.generateToken(emailOk._id);
+        // ENVIA REQUISIÇÃO COM JWT
+        console.log(emailOk._id);
+        res.status(200).json({
+          message: `${emailOk.fName} logado com sucesso`,
+          user: emailOk,
+          token: token,
+          success: true,
+        });
+      }
     }
+  }else{
+    res.status(500).json({
+      error: "Todos campos devem ser preenchidos",
+      success: false,
+    });
   }
+  
 };
 
 controller.getUsers = async (req, res) => {
