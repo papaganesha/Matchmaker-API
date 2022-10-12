@@ -11,11 +11,11 @@ var nameValidator = [
       arguments: [5, 50],
       message: 'Nome deve ter entre 3 e 50 carácteres'
     }),
-    validate({
-      validator: 'isAlphanumeric',
-      passIfEmpty: true,
-      message: 'Nome deve conter apenas carácteres alfanuméricos'
-    })
+    // validate({
+    //   validator: 'isAlphanumeric',
+    //   passIfEmpty: true,
+    //   message: 'Nome deve conter apenas carácteres alfanuméricos'
+    // })
 ]
 
 // VALIDANDO TAMANHO E CARACTERES EM PASSWORD
@@ -84,7 +84,7 @@ const UserSchema = new Schema({
         },
     ],
     createdAt: {type: Date, default: Date.now}, 
-    lastUpdate: Date, 
+    lastUpdate: {type: Date}, 
 
     likes: [ 
         {   
@@ -95,7 +95,8 @@ const UserSchema = new Schema({
     matchs: [
         {   
             matchId: { type: String, default: null },
-            matchDate: { type: Date, default: null }
+            matchDate: { type: Date, default: null },
+            animatedDone: { type: Boolean, default: 0 },
         },
     ],
     pictures: { type: Array, default: null },

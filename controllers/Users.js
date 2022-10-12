@@ -5,6 +5,36 @@ var mongoose = require("mongoose");
 
 const controller = {};
 
+controller.checkEmail = async(email)=>{
+  let returnValue = false;
+  try{
+    const result = await User.find({email : email})
+    .then((res)=>{
+        returnValue = true
+    })
+  }catch(err){
+    console.log(err)
+  }
+  return returnValue
+  
+}
+
+controller.checkById = async(id)=>{
+  let returnValue = false;
+  try{
+    const result = await User.findById(id)
+    .then((res)=>{
+        returnValue = true
+    })
+  }catch(err){
+    console.log(err)
+  }
+  return returnValue
+  
+}
+
+//FUNCAO QUE PEGA NOME DA VARIAVEL E DE ACORDO MUDA ELA NO USUARIO
+
 controller.SignUp = async (req, res) => {
   const {
     fName,
@@ -106,10 +136,7 @@ controller.SignIn = async (req, res) => {
       console.log(emailOk._id);
       res.status(200).json({
         message: `${emailOk.fName} logado com sucesso`,
-        user: {
-          id: emailOk._id,
-          email: emailOk.email,
-        },
+        user: emailOk,
         token: token,
         success: true,
       });
@@ -125,8 +152,33 @@ controller.getUsers = async (req, res) => {
   });
 };
 
+
+controller.updateUserInfo = async (req, res) => {
+  const id = req.userId
+  //let keys = Object.keys(req.body)
+  for(i in req.body){
+    var push = {};
+    push[i] = req.body[i] 
+    console.log(push)
+    await User.findByIdAndUpdate(id, {
+      $set: {
+        push,
+        lastUpdate: Date.now(),
+      },
+    }, {new:true})
+  }
+
+  const user = await User.findById(id);
+  if (user) {
+    res.status(200).json({
+      data: user,
+      success: true,
+    });
+  }
+}
+
 controller.updateUser = async (req, res) => {
-  const { id } = req.params;
+  const id  = req.userId;
   const {
     fName,
     sName,
@@ -150,7 +202,7 @@ controller.updateUser = async (req, res) => {
       summary: summary,
       lastUpdate: Date.now(),
     },
-  });
+  })
 
   const user = await User.findById(id);
   if (user) {
@@ -177,17 +229,10 @@ controller.deleteUser = async (req, res) => {
   }
 };
 
-controller.getUsers = async (req, res) => {
-  const users = await User.find();
-  res.status(200).json({
-    data: users,
-    success: true,
-  });
-};
 
 controller.getUserById = async (req, res) => {
   var id = req.userId;
-  const user = await User.findById(id);
+  const user = await User.findById(id)
   if (!user) {
     res.status(500).json({
       error: "Usuario não existente",
