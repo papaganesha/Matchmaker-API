@@ -165,14 +165,12 @@ controller.updateUserInfo = async (req, res) => {
   const id = req.userId
   //let keys = Object.keys(req.body)
   for(i in req.body){
-    var push = {};
-    push[i] = req.body[i] 
-    console.log(push)
+    var set = {};
+    set[i] = req.body[i] 
+    set['lastUpdate'] = Date.now()
+    console.log(set)
     await User.findByIdAndUpdate(id, {
-      $set: {
-        push,
-        lastUpdate: Date.now(),
-      },
+      $set: set,
     }, {new:true})
   }
 
