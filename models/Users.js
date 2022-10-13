@@ -59,8 +59,8 @@ var summaryValidator = [
 var summaryValidator = [
     validate({
       validator: 'isLength',
-      arguments: [0, 400],
-      message: 'Resumo deve ter no maximo 400 carácteres'
+      arguments: [10, 400],
+      message: 'Resumo deve ter no minimo 10 carácteres e no maximo 400 carácteres'
     }),
 ]
 

@@ -161,8 +161,9 @@ controller.getUsers = async (req, res) => {
 };
 
 
-controller.updateUserInfo = async (req, res) => {
+controller.updateUserInfo = async (req, res, next) => {
   const id = req.userId
+  var errorMessage 
   //let keys = Object.keys(req.body)
   for(i in req.body){
     var set = {};
@@ -171,16 +172,29 @@ controller.updateUserInfo = async (req, res) => {
     console.log(set)
     await User.findByIdAndUpdate(id, {
       $set: set,
-    }, {new:true})
+    }, {new:true, runValidators: true })
+    .catch(err =>{
+        console.log(err.errors[i].message)
+        errorMessage = err.errors[i].message
+    })
+   
+  }
+  if(errorMessage){
+    res.status(500).json({
+      error: errorMessage,
+      success: false,
+    })
+  }else{
+    
+    const user = await User.findById(id);
+    if (user) {
+      res.status(200).json({
+        data: user,
+        success: true,
+      })
+    }
   }
 
-  const user = await User.findById(id);
-  if (user) {
-    res.status(200).json({
-      data: user,
-      success: true,
-    });
-  }
 }
 
 controller.updateUser = async (req, res) => {
