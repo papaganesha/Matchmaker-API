@@ -7,7 +7,7 @@ router.get(`${apiUrl}/`, (req, res)=>{
     res.send('ola')
 })
 
-router.get(`${apiUrl}/users`, getUsers)
+router.get(`${apiUrl}/users`, isAuth, getUsers)
 
 router.get(`${apiUrl}/user`, isAuth, getUserById)
 
