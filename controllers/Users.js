@@ -176,6 +176,10 @@ controller.updateUserInfo = async (req, res, next) => {
     .catch(err =>{
         console.log(err.errors[i].message)
         errorMessage = err.errors[i].message
+        res.status(500).json({
+          error: err.errors[i].message,
+          success: false,
+        })
     })
    
   }
