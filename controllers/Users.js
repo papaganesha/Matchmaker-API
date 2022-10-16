@@ -151,11 +151,8 @@ controller.getUsers = async (req, res) => {
 };
 
 
-controller.updateUserInfo = async (req, res, next) => {
+controller.uploadMainPic = async (req, res, next) => {
   const id = req.userId
-
-  console.log("req.body => ", req.body)
-  console.log("req.file => ", req.file)
 
   let result = await cloudinary.uploader.upload(req.file.path, {
     public_id: `${id}_profile`,
@@ -173,38 +170,53 @@ controller.updateUserInfo = async (req, res, next) => {
 
   for (i in req.body) {
     var set = {};
-    if (i == "mainPicture" && i !== undefined) {
-      set[i] = req.body[i]
-      set['lastUpdate'] = Date.now()
-      console.log(set)
-      await User.findByIdAndUpdate(id, 
-        {mainPicture: result.url}, 
-        { new: true, runValidators: true })
-        .catch(err => {
-          console.log(err.errors[i].message)
-          res.status(500).json({
-            error: err.errors[i].message,
-            success: false,
-          })
+    set[i] = req.body[i]
+    set['lastUpdate'] = Date.now()
+    console.log(set)
+    await User.findByIdAndUpdate(id,
+      { mainPicture: result.url },
+      { new: true, runValidators: true })
+      .catch(err => {
+        console.log(err.errors[i].message)
+        res.status(500).json({
+          error: err.errors[i].message,
+          success: false,
         })
-
-    } else {
-      set[i] = req.body[i]
-      set['lastUpdate'] = Date.now()
-      console.log(set)
-      await User.findByIdAndUpdate(id, {
-        $set: set,
-      }, { new: true, runValidators: true })
-        .catch(err => {
-          console.log(err.errors[i].message)
-          res.status(500).json({
-            error: err.errors[i].message,
-            success: false,
-          })
-        })
-
-    }
+      })
   }
+
+  const user = await User.findById(id);
+  if (user) {
+    res.status(200).json({
+      data: user,
+      success: true,
+    })
+  }
+
+}
+
+controller.updateUserInfo = async (req, res, next) => {
+  const id = req.userId
+
+
+  for (i in req.body) {
+    var set = {};
+    set[i] = req.body[i]
+    set['lastUpdate'] = Date.now()
+    console.log(set)
+    await User.findByIdAndUpdate(id, {
+      $set: set,
+    }, { new: true, runValidators: true })
+      .catch(err => {
+        console.log(err.errors[i].message)
+        res.status(500).json({
+          error: err.errors[i].message,
+          success: false,
+        })
+      })
+
+  }
+
 
   const user = await User.findById(id);
   if (user) {

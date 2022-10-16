@@ -3,7 +3,7 @@ const multer = require('multer');
 
 const isAuth = require('../middlewares/AuthenticationHandler')
 const apiUrl = process.env.API_URL
-const {getUsers, getUserById, getUserAge, SignUp, SignIn, getUserInterests, updateUser, updateUserInfo, deleteUser, addInterests, deleteInterest, addLike} = require('../controllers/Users')
+const {getUsers, getUserById, getUserAge, SignUp, SignIn, getUserInterests, updateUser, updateUserInfo, deleteUser, addInterests, deleteInterest, addLike, uploadMainPic} = require('../controllers/Users')
 
 
 const storage = multer.diskStorage({});
@@ -36,10 +36,12 @@ router.post(`${apiUrl}/interests`, isAuth, addInterests)
 
 router.post(`${apiUrl}/like`, isAuth, addLike)
 
+router.post(`${apiUrl}/uploadAvatar`, isAuth, uploads.single('profile'), uploadMainPic)
+
 
 router.put(`${apiUrl}/userupdate/:id`, isAuth, updateUser)
 
-router.put(`${apiUrl}/user`, isAuth,   uploads.single('profile'), updateUserInfo)
+router.put(`${apiUrl}/user`, isAuth, updateUserInfo)
 
 
 
