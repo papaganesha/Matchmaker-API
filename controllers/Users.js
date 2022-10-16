@@ -156,13 +156,20 @@ controller.updateUserInfo = async (req, res, next) => {
 
   console.log("req.body => ", req.body)
   console.log("req.file => ", req.file)
-
+  try {
   const result = await cloudinary.uploader.upload(req.body.uri, {
     public_id: `${id}_profile`,
     width: 500,
     height: 500,
     crop: 'fill',
-  });
+  })
+}catch (error) {
+  res
+    .status(500)
+    .json({ success: false, error: 'server error, try after some time' });
+  console.log('Error while uploading profile image', error.message);
+}
+};
 
 
   for (i in req.body) {
