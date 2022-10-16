@@ -4,7 +4,7 @@ const moment = require("moment");
 var mongoose = require("mongoose");
 const multer = require('multer');
 const sharp = require('sharp');
-const cloudinary = require('../helper/imageUpload');
+const {cloudinary} = require('../helper/imageUpload');
 
 
 const controller = {};
