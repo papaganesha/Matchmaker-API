@@ -99,7 +99,11 @@ const UserSchema = new Schema({
       animatedDone: { type: Boolean, default: 0 },
     },
   ],
-  pictures: { type: Array, default: null },
+  pictures: {
+    type: Array, default: [
+      { createdAt: { type: Date, default: Date.now } }
+    ]
+  },
   mainPicture: String,
   firstLogin: { type: Boolean, default: true },
   isVerified: { type: Boolean, default: false }
