@@ -176,19 +176,18 @@ controller.uploadMainPic = async (req, res, next) => {
         })
       })
 
+  }).catch(err => {
+    console.log("drip here 2")
+    res.status(500).json({ success: false, error: err.message });
+  })
+
   const user = await User.findById(id);
   if (user) {
     res.status(200).json({
       data: user,
       success: true,
     })
-  }
-  }).catch(err => {
-    console.log("drip here 2")
-    res.status(500).json({ success: false, error: err.message });
-  })
-
-    
+  }  
 
 }
 
