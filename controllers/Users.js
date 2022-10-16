@@ -153,7 +153,8 @@ controller.getUsers = async (req, res) => {
 
 controller.updateUserInfo = async (req, res, next) => {
   const id = req.userId
-  
+  console.log("req => ",req)
+  console.log("req.body => ",req.body)
   const result = await cloudinary.uploader.upload(req.file.path, {
     public_id: `${user._id}_profile`,
     width: 500,
