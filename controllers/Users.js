@@ -164,10 +164,11 @@ controller.updateUserInfo = async (req, res, next) => {
       crop: 'fill',
     })
   } catch (error) {
+    console.log('Error while uploading profile image', error.message);
+
     res
       .status(500)
       .json({ success: false, error: 'server error, try after some time' });
-    console.log('Error while uploading profile image', error.message);
   }
 
   console.log("RESULT.URL =>", result)
