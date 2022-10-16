@@ -191,6 +191,46 @@ controller.uploadMainPic = async (req, res, next) => {
 
 }
 
+controller.uploadPictures = async (req, res, next) => {
+  const id = req.userId
+
+  await cloudinary.uploader.upload(req.file.path, {
+    public_id: `${id}_profile`,
+    width: 500,
+    height: 500,
+    crop: 'fill',
+  })
+  .then(async(res) => {
+    await User.findByIdAndUpdate(id,
+      {$push: { pictures: res.url }},
+      { new: true, runValidators: true })
+      .then(res =>{
+        console.log(res)
+      })
+      .catch(err => {
+        console.log("drip here 1") 
+        console.log(err.errors[i].message)
+        res.status(500).json({
+          error: err.errors[i].message,
+          success: false,
+        })
+      })
+
+  }).catch(err => {
+    console.log("drip here 2")
+    res.status(500).json({ success: false, error: err.message });
+  })
+
+  const user = await User.findById(id);
+  if (user) {
+    res.status(200).json({
+      data: user,
+      success: true,
+    })
+  }  
+
+}
+
 controller.updateUserInfo = async (req, res, next) => {
   const id = req.userId
 
