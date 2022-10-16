@@ -1,11 +1,22 @@
 const router = require('express').Router();
+const multer = require('multer');
+
 const isAuth = require('../middlewares/AuthenticationHandler')
 const apiUrl = process.env.API_URL
 const {getUsers, getUserById, getUserAge, SignUp, SignIn, getUserInterests, updateUser, updateUserInfo, deleteUser, addInterests, deleteInterest, addLike} = require('../controllers/Users')
 
-router.get(`${apiUrl}/`, (req, res)=>{
-    res.send('ola')
-})
+
+const storage = multer.diskStorage({});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb('invalid image file!', false);
+  }
+};
+
+const uploads = multer({ storage, fileFilter });
 
 router.get(`${apiUrl}/users`, isAuth, getUsers)
 
@@ -28,7 +39,7 @@ router.post(`${apiUrl}/like`, isAuth, addLike)
 
 router.put(`${apiUrl}/userupdate/:id`, isAuth, updateUser)
 
-router.put(`${apiUrl}/user`, isAuth, updateUserInfo)
+router.put(`${apiUrl}/user`, isAuth,   uploads.single('profile'), updateUserInfo)
 
 
 
