@@ -170,7 +170,7 @@ controller.updateUserInfo = async (req, res, next) => {
     console.log('Error while uploading profile image', error.message);
   }
 
-
+  console.log("RESULT.URL =>", result)
 
   for (i in req.body) {
     var set = {};
