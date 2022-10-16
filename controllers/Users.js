@@ -167,7 +167,7 @@ controller.updateUserInfo = async (req, res, next) => {
     }).catch(error => {
       res
         .status(500)
-        .json({ success: false, error: 'server error, try after some time' });
+        .json({ success: false, error: error.message });
     })
 
 
