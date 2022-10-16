@@ -173,46 +173,28 @@ controller.getUsers = async (req, res) => {
 
 
 controller.updateUserInfo = async (req, res, next) => {
-    const url = req.protocol + '://' + req.get('host')
+  //const url = req.protocol + '://' + req.get('host')
   const id = req.userId
   var errorMessage
   //let keys = Object.keys(req.body)
   for (i in req.body) {
     var set = {};
-    if (i == "mainPicture" && i !== undefined) {
-      set[i] = req.body[i]
-      set['lastUpdate'] = Date.now()
-      console.log(set)
-      await User.findByIdAndUpdate(id, {
-        $set: set,
-      }, { new: true, runValidators: true })
-        .catch(err => {
-          console.log(err.errors[i].message)
-          errorMessage = err.errors[i].message
-          res.status(500).json({
-            error: err.errors[i].message,
-            success: false,
-          })
+    set[i] = req.body[i]
+    set['lastUpdate'] = Date.now()
+    console.log(set)
+    await User.findByIdAndUpdate(id, {
+      $set: set,
+    }, { new: true, runValidators: true })
+      .catch(err => {
+        console.log(err.errors[i].message)
+        errorMessage = err.errors[i].message
+        res.status(500).json({
+          error: err.errors[i].message,
+          success: false,
         })
-
-    } else {
-      set[i] = req.body[i]
-      set['lastUpdate'] = Date.now()
-      console.log(set)
-      await User.findByIdAndUpdate(id, {
-        $set: set,
-      }, { new: true, runValidators: true })
-        .catch(err => {
-          console.log(err.errors[i].message)
-          errorMessage = err.errors[i].message
-          res.status(500).json({
-            error: err.errors[i].message,
-            success: false,
-          })
-        })
-
-    }
+      })
   }
+
   if (errorMessage) {
     res.status(500).json({
       error: errorMessage,
