@@ -1,61 +1,61 @@
-const User   = require("../models/Users");
+const User = require("../models/Users");
 const bcrypt = require("bcrypt");
 const moment = require("moment");
 var mongoose = require("mongoose");
-const multer = require('multer'),
+const multer = require('multer');
 
 const DIR = './public/';
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, DIR);
-    },
-    filename: (req, file, cb) => {
-        const fileName = file.originalname.toLowerCase().split(' ').join('-');
-        cb(null, uuidv4() + '-' + fileName)
-    }
+  destination: (req, file, cb) => {
+    cb(null, DIR);
+  },
+  filename: (req, file, cb) => {
+    const fileName = file.originalname.toLowerCase().split(' ').join('-');
+    cb(null, uuidv4() + '-' + fileName)
+  }
 });
 
 var upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
-      if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
-          cb(null, true);
-      } else {
-          cb(null, false);
-          return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
-      }
+    if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+    }
   }
 });
 
 const controller = {};
 
-controller.checkEmail = async(email)=>{
+controller.checkEmail = async (email) => {
   let returnValue = false;
-  try{
-    const result = await User.find({email : email})
-    .then((res)=>{
+  try {
+    const result = await User.find({ email: email })
+      .then((res) => {
         returnValue = true
-    })
-  }catch(err){
+      })
+  } catch (err) {
     console.log(err)
   }
   return returnValue
-  
+
 }
 
-controller.checkById = async(id)=>{
+controller.checkById = async (id) => {
   let returnValue = false;
-  try{
+  try {
     const result = await User.findById(id)
-    .then((res)=>{
+      .then((res) => {
         returnValue = true
-    })
-  }catch(err){
+      })
+  } catch (err) {
     console.log(err)
   }
   return returnValue
-  
+
 }
 
 //FUNCAO QUE PEGA NOME DA VARIAVEL E DE ACORDO MUDA ELA NO USUARIO
@@ -111,17 +111,17 @@ controller.SignUp = async (req, res) => {
 
 controller.SignIn = async (req, res) => {
   const { email, password } = req.body;
-  if(email && password){
+  if (email && password) {
     const user = new User({
       email: email,
       password: password,
     });
-  
+
     //PEGA USUARIO COM EMAIL
     const emailOk = await User.findOne({
       email: email,
     })
-    
+
     //SE O USUARIO NAO EXISTIR
     if (!emailOk) {
       res.status(500).json({
@@ -132,7 +132,7 @@ controller.SignIn = async (req, res) => {
     } else {
       //VERIFICA O PASSWORDHASH ENCONTRADO E COMPARA COM O PASSWORD INSERIDO
       const isMatch = await bcrypt.compare(password, emailOk.password);
-  
+
       //CASO COMPARAÇÃO DE INVALIDA
       if (!isMatch) {
         res.status(500).json({
@@ -154,13 +154,13 @@ controller.SignIn = async (req, res) => {
         });
       }
     }
-  }else{
+  } else {
     res.status(500).json({
       error: "Todos campos devem ser preenchidos",
       success: false,
     });
   }
-  
+
 };
 
 controller.getUsers = async (req, res) => {
@@ -175,51 +175,51 @@ controller.getUsers = async (req, res) => {
 controller.updateUserInfo = async (req, res, next) => {
   const url = req.protocol + '://' + req.get('host')
   const id = req.userId
-  var errorMessage 
+  var errorMessage
   //let keys = Object.keys(req.body)
-  for(i in req.body){
+  for (i in req.body) {
     var set = {};
-    if(i == "mainPicture"){
-      set[i] = req.body[i] 
-    set['lastUpdate'] = Date.now()
-    console.log(set)
-    await User.findByIdAndUpdate(id, {
-      $set: {mainPicture: url + '/public/' + req.file.filename},
-    }, {new:true, runValidators: true })
-    .catch(err =>{
-        console.log(err.errors[i].message)
-        errorMessage = err.errors[i].message
-        res.status(500).json({
-          error: err.errors[i].message,
-          success: false,
+    if (i == "mainPicture") {
+      set[i] = req.body[i]
+      set['lastUpdate'] = Date.now()
+      console.log(set)
+      await User.findByIdAndUpdate(id, {
+        $set: { mainPicture: url + '/public/' + req.file.filename },
+      }, { new: true, runValidators: true })
+        .catch(err => {
+          console.log(err.errors[i].message)
+          errorMessage = err.errors[i].message
+          res.status(500).json({
+            error: err.errors[i].message,
+            success: false,
+          })
         })
-    })
-   
-    }else{
-      set[i] = req.body[i] 
-    set['lastUpdate'] = Date.now()
-    console.log(set)
-    await User.findByIdAndUpdate(id, {
-      $set: set,
-    }, {new:true, runValidators: true })
-    .catch(err =>{
-        console.log(err.errors[i].message)
-        errorMessage = err.errors[i].message
-        res.status(500).json({
-          error: err.errors[i].message,
-          success: false,
+
+    } else {
+      set[i] = req.body[i]
+      set['lastUpdate'] = Date.now()
+      console.log(set)
+      await User.findByIdAndUpdate(id, {
+        $set: set,
+      }, { new: true, runValidators: true })
+        .catch(err => {
+          console.log(err.errors[i].message)
+          errorMessage = err.errors[i].message
+          res.status(500).json({
+            error: err.errors[i].message,
+            success: false,
+          })
         })
-    })
-   
+
     }
   }
-  if(errorMessage){
+  if (errorMessage) {
     res.status(500).json({
       error: errorMessage,
       success: false,
     })
-  }else{
-    
+  } else {
+
     const user = await User.findById(id);
     if (user) {
       res.status(200).json({
@@ -232,7 +232,7 @@ controller.updateUserInfo = async (req, res, next) => {
 }
 
 controller.updateUser = async (req, res) => {
-  const id  = req.userId;
+  const id = req.userId;
   const {
     fName,
     sName,
@@ -428,19 +428,19 @@ controller.deleteInterest = async (req, res) => {
         { $pull: { 'interests': { interestName: interestName } } }
       )
         .then((result) => {
-            console.log("modeified => ", result.modifiedCount)
-            console.log("matched => ", result.matchedCount)
-            if(result.modifiedCount == 1 && result.matchedCount == 1) {
-                res.status(201).json({
-                    message: "Interesse excluido",
-                    success: true
-                  })
-            }else{
-                res.status(500).json({
-                    error: "Não foi possivel, usuario não possui este interesse",
-                    success: false
-                  })
-            }
+          console.log("modeified => ", result.modifiedCount)
+          console.log("matched => ", result.matchedCount)
+          if (result.modifiedCount == 1 && result.matchedCount == 1) {
+            res.status(201).json({
+              message: "Interesse excluido",
+              success: true
+            })
+          } else {
+            res.status(500).json({
+              error: "Não foi possivel, usuario não possui este interesse",
+              success: false
+            })
+          }
         })
         .catch((err) => {
           res.status(500).json({
