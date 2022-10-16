@@ -166,7 +166,7 @@ controller.uploadMainPic = async (req, res, next) => {
       .status(500)
       .json({ success: false, error: error.message });
   })
-
+  console.log("result.url =>",result.url)
     await User.findByIdAndUpdate(id,
       {$set: { mainPicture: result.url }},
       { new: true, runValidators: true })
