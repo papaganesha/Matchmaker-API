@@ -157,7 +157,7 @@ controller.updateUserInfo = async (req, res, next) => {
   console.log("req.body => ", req.body)
   console.log("req.file => ", req.file)
   try {
-    const result = await cloudinary.uploader.upload(req.body.uri, {
+    const result = await cloudinary.uploader.upload(req.file.path, {
       public_id: `${id}_profile`,
       width: 500,
       height: 500,
