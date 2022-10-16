@@ -8,7 +8,7 @@ const {getUsers, getUserById, getUserAge, SignUp, SignIn, getUserInterests, upda
 
 const storage = multer.diskStorage({});
 
-const fileFilter = (req, file, cb) => {
+const fileFilter = (req, res, file, cb) => {
   if (file.mimetype.startsWith('image')) {
     cb(null, true);
   } else {
