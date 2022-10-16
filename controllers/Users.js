@@ -173,7 +173,8 @@ controller.getUsers = async (req, res) => {
 
 
 controller.updateUserInfo = async (req, res, next) => {
-  const url = req.protocol + '://' + req.get('host')
+  if(req.body){
+    const url = req.protocol + '://' + req.get('host')
   const id = req.userId
   var errorMessage
   //let keys = Object.keys(req.body)
@@ -229,6 +230,12 @@ controller.updateUserInfo = async (req, res, next) => {
     }
   }
 
+  }else{
+    res.status(500).json({
+      error: "Preencha todos os campos",
+      success: false,
+    })
+  }
 }
 
 controller.updateUser = async (req, res) => {
