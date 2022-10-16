@@ -157,18 +157,18 @@ controller.updateUserInfo = async (req, res, next) => {
   console.log("req.body => ", req.body)
   console.log("req.file => ", req.file)
 
-    let result = await cloudinary.uploader.upload(req.file.path, {
-      public_id: `${id}_profile`,
-      width: 500,
-      height: 500,
-      crop: 'fill',
-    }).then(res => {
-      console.log(res)
-    }).catch(error => {
-      res
-        .status(500)
-        .json({ success: false, error: error.message });
-    })
+  let result = await cloudinary.uploader.upload(req.file.path, {
+    public_id: `${id}_profile`,
+    width: 500,
+    height: 500,
+    crop: 'fill',
+  }).then(res => {
+    console.log(res)
+  }).catch(error => {
+    res
+      .status(500)
+      .json({ success: false, error: error.message });
+  })
 
 
   for (i in req.body) {
@@ -177,9 +177,9 @@ controller.updateUserInfo = async (req, res, next) => {
       set[i] = req.body[i]
       set['lastUpdate'] = Date.now()
       console.log(set)
-      await User.findByIdAndUpdate(id, {
-        $set: { mainPicture: result.url },
-      }, { new: true, runValidators: true })
+      await User.findByIdAndUpdate(id, 
+        {mainPicture: result.url}, 
+        { new: true, runValidators: true })
         .catch(err => {
           console.log(err.errors[i].message)
           res.status(500).json({
