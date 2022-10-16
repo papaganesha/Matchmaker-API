@@ -167,15 +167,12 @@ controller.uploadMainPic = async (req, res, next) => {
       .json({ success: false, error: error.message });
   })
 
-
-  for (i in req.body) {
-    var set = {};
-    set[i] = req.body[i]
-    set['lastUpdate'] = Date.now()
-    console.log(set)
     await User.findByIdAndUpdate(id,
       {$set: { mainPicture: result.url }},
       { new: true, runValidators: true })
+      .then(res =>{
+        console.log(res)
+      })
       .catch(err => {
         console.log(err.errors[i].message)
         res.status(500).json({
@@ -183,7 +180,6 @@ controller.uploadMainPic = async (req, res, next) => {
           success: false,
         })
       })
-  }
 
   const user = await User.findById(id);
   if (user) {
