@@ -154,8 +154,8 @@ controller.getUsers = async (req, res) => {
 controller.updateUserInfo = async (req, res, next) => {
   const id = req.userId
 
-  console.log("req.body => ",req.body)
-  console.log("req.file => ",req.file)
+  console.log("req.body => ", req.body)
+  console.log("req.file => ", req.file)
 
   const result = await cloudinary.uploader.upload(req.file.path, {
     public_id: `${id}_profile`,
@@ -199,21 +199,15 @@ controller.updateUserInfo = async (req, res, next) => {
 
     }
   }
-  if (errorMessage) {
-    res.status(500).json({
-      error: errorMessage,
-      success: false,
-    })
-  } else {
 
-    const user = await User.findById(id);
-    if (user) {
-      res.status(200).json({
-        data: user,
-        success: true,
-      })
-    }
+  const user = await User.findById(id);
+  if (user) {
+    res.status(200).json({
+      data: user,
+      success: true,
+    })
   }
+
 }
 
 controller.updateUser = async (req, res) => {
