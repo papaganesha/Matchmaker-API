@@ -159,7 +159,8 @@ controller.uploadMainPic = async (req, res, next) => {
     width: 500,
     height: 500,
     crop: 'fill',
-  }).then(async(res) => {
+  })
+  .then(async(res) => {
     await User.findByIdAndUpdate(id,
       {$set: { mainPicture: res.url }},
       { new: true, runValidators: true })
@@ -182,9 +183,9 @@ controller.uploadMainPic = async (req, res, next) => {
       success: true,
     })
   }
-  }).catch(error => {
+  }).catch(err => {
     console.log("drip here 2")
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: err.message });
   })
 
     
