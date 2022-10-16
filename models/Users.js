@@ -100,10 +100,7 @@ const UserSchema = new Schema({
     },
   ],
   pictures: { type: Array, default: null },
-  mainPicture: {
-    data: Buffer,
-    contentType: String,
-  },
+  mainPicture: String,
   firstLogin: { type: Boolean, default: true },
   isVerified: { type: Boolean, default: false }
 })
