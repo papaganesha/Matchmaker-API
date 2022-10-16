@@ -1,7 +1,32 @@
-const User = require("../models/Users");
+const User   = require("../models/Users");
 const bcrypt = require("bcrypt");
 const moment = require("moment");
 var mongoose = require("mongoose");
+const multer = require('multer'),
+
+const DIR = './public/';
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, DIR);
+    },
+    filename: (req, file, cb) => {
+        const fileName = file.originalname.toLowerCase().split(' ').join('-');
+        cb(null, uuidv4() + '-' + fileName)
+    }
+});
+
+var upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+      if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+          cb(null, true);
+      } else {
+          cb(null, false);
+          return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+      }
+  }
+});
 
 const controller = {};
 
@@ -37,15 +62,8 @@ controller.checkById = async(id)=>{
 
 controller.SignUp = async (req, res) => {
   const {
-    fName,
-    sName,
     email,
-    password,
-    birthDate,
-    city,
-    gender,
-    sexOrientation,
-    summary,
+    password
   } = req.body;
 
   if (
@@ -61,15 +79,8 @@ controller.SignUp = async (req, res) => {
     });
   } else {
     const user = new User({
-      fName: fName,
-      sName: sName,
       email: email,
       password: password,
-      birthDate: birthDate,
-      city: city,
-      gender: gender,
-      summary: summary,
-      sexOrientation: sexOrientation,
     });
 
     // SALVANDO USUARIO NO BD
@@ -162,12 +173,30 @@ controller.getUsers = async (req, res) => {
 
 
 controller.updateUserInfo = async (req, res, next) => {
+  const url = req.protocol + '://' + req.get('host')
   const id = req.userId
   var errorMessage 
   //let keys = Object.keys(req.body)
   for(i in req.body){
     var set = {};
-    set[i] = req.body[i] 
+    if(i == "mainPicture"){
+      set[i] = req.body[i] 
+    set['lastUpdate'] = Date.now()
+    console.log(set)
+    await User.findByIdAndUpdate(id, {
+      $set: {mainPicture: url + '/public/' + req.file.filename},
+    }, {new:true, runValidators: true })
+    .catch(err =>{
+        console.log(err.errors[i].message)
+        errorMessage = err.errors[i].message
+        res.status(500).json({
+          error: err.errors[i].message,
+          success: false,
+        })
+    })
+   
+    }else{
+      set[i] = req.body[i] 
     set['lastUpdate'] = Date.now()
     console.log(set)
     await User.findByIdAndUpdate(id, {
@@ -182,6 +211,7 @@ controller.updateUserInfo = async (req, res, next) => {
         })
     })
    
+    }
   }
   if(errorMessage){
     res.status(500).json({
