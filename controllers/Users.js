@@ -167,6 +167,7 @@ controller.uploadMainPic = async (req, res, next) => {
         console.log(res)
       })
       .catch(err => {
+        console.log("drip here 1") 
         console.log(err.errors[i].message)
         res.status(500).json({
           error: err.errors[i].message,
@@ -182,9 +183,8 @@ controller.uploadMainPic = async (req, res, next) => {
     })
   }
   }).catch(error => {
-    res
-      .status(500)
-      .json({ success: false, error: error.message });
+    console.log("drip here 2")
+    res.status(500).json({ success: false, error: error.message });
   })
 
     
