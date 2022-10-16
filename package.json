@@ -13,6 +13,7 @@
     "age-calculator": "^1.0.0",
     "bcrypt": "^5.0.1",
     "bson": "^4.7.0",
+    "cloudinary": "^1.32.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "email-verifier": "^0.4.1",
@@ -30,6 +31,7 @@
     "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "react-hook-form": "^7.36.1",
+    "sharp": "^0.31.1",
     "uuid": "^9.0.0"
   }
 }
