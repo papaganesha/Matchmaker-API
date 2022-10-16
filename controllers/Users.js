@@ -154,13 +154,12 @@ controller.getUsers = async (req, res) => {
 controller.uploadMainPic = async (req, res, next) => {
   const id = req.userId
 
-  let result = await cloudinary.uploader.upload(req.file.path, {
+  await cloudinary.uploader.upload(req.file.path, {
     public_id: `${id}_profile`,
     width: 500,
     height: 500,
     crop: 'fill',
-  })
-  .then(async(res) => {
+  }).then(async(res) => {
     await User.findByIdAndUpdate(id,
       {$set: { mainPicture: res.url }},
       { new: true, runValidators: true })
