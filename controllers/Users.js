@@ -195,7 +195,7 @@ controller.uploadPictures = async (req, res, next) => {
   const id = req.userId
 
   await cloudinary.uploader.upload(req.file.path, {
-    public_id: `${id}_profile`,
+    public_id: `${id}_picture`,
     width: 500,
     height: 500,
     crop: 'fill',
