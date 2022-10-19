@@ -81,6 +81,7 @@ const UserSchema = new Schema({
   interests: [
     {
       interestName: { type: String, default: null },
+      iconName: { type: String, default: null },
     },
   ],
   createdAt: { type: Date, default: Date.now },
