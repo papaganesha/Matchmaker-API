@@ -69,8 +69,8 @@ var summaryValidator = [
 //GENDER - 0 MASC / 1 FEM / 2 Trans / 3 NAO BINARIO
 //SEXUAL ORIENTATION - 0 HETERO/ 1 HOMO / 2 BI / 3 PAN
 const UserSchema = new Schema({
-  fName: { type: String, required: true, validate: nameValidator },
-  sName: { type: String, required: true, validate: nameValidator },
+  fName: { type: String, validate: nameValidator },
+  sName: { type: String, validate: nameValidator },
   email: { type: String, required: true, validate: emailValidator },
   password: { type: String, required: true, select: true, validate: passwordValidator },
   birthDate: { type: Date },
