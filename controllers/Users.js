@@ -128,6 +128,7 @@ controller.SignIn = async (req, res) => {
         res.status(200).json({
           message: `${emailOk.fName} logado com sucesso`,
           user: emailOk,
+          firstLogin: emailOk.firstLogin,
           token: token,
           success: true,
         });
@@ -233,7 +234,6 @@ controller.uploadPictures = async (req, res, next) => {
 
 controller.updateUserInfo = async (req, res, next) => {
   const id = req.userId
-
 
   for (i in req.body) {
     var set = {};
