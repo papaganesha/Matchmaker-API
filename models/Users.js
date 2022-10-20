@@ -80,8 +80,8 @@ const UserSchema = new Schema({
   summary: { type: String, validate: summaryValidator },
   interests: [
     {
-      interestName: { type: String, default: null },
-      iconName: { type: String, default: null },
+      interestName: { type: String},
+      iconName: { type: String},
     },
   ],
   createdAt: { type: Date, default: Date.now },
@@ -95,8 +95,8 @@ const UserSchema = new Schema({
   ],
   matchs: [
     {
-      matchId: { type: String, default: null },
-      matchDate: { type: Date, default: null },
+      matchId: { type: String },
+      matchDate: { type: Date },
       animatedDone: { type: Boolean, default: 0 },
     },
   ],
