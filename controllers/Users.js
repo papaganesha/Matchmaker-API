@@ -42,7 +42,8 @@ controller.checkById = async (id) => {
 controller.SignUp = async (req, res) => {
   const {
     email,
-    password
+    password,
+    birthDate
   } = req.body;
 
   if (
@@ -60,6 +61,7 @@ controller.SignUp = async (req, res) => {
     const user = new User({
       email: email,
       password: password,
+      birthDate: birthDate
     });
 
     // SALVANDO USUARIO NO BD
@@ -142,8 +144,41 @@ controller.SignIn = async (req, res) => {
 
 };
 
+
+
 controller.getUsers = async (req, res) => {
+  const id = req.userId
+  const userI = await User.findById(id);
+  console.log(`MY CITY =>${userI.city}  MY INTERESTS =>  ${userI.interests}`)
   const users = await User.find();
+  //CENARIOS
+  //USUARIO HOMEM, HETEROSEXUAL, GENDER 0, ORIENTATION 0 => RESPOSTA GENDER 1, ORIENTATION 0
+  //USUARIO HOMEM, BISSEXUAL, GENDER 0, ORIENTATION 1 => RESPOSTA GENDER 0/1/2, ORIENTATION 0/1/2
+  //USUARIO HOMEM, HOMOSSEXUAL, GENDER 0, ORIENTATION 2 => RESPOSTA GENDER 0/2, ORIENTATION 1/2
+
+  //USUARIA MULHER, HETEROSEXUAL, GENDER 1, ORIENTATION 0 => RESPOSTA GENDER 0, ORIENTATION 0
+  //USUARIA MULHER, BISSEXUAL, GENDER 1, ORIENTATION 1 => RESPOSTA GENDER 0/1/2, ORIENTATION 0/1/2
+  //USUARIA MULHER, HOMOSSEXUAL, GENDER 1, ORIENTATION 2 => RESPOSTA GENDER 1, ORIENTATION 1/2
+
+  //USUARIO TRANS HOMEM, HETEROSEXUAL, GENDER 2, ORIENTATION 0 => RESPOSTA GENDER 0, ORIENTATION 0
+  //USUARIO TRANS HOMEM, BISSEXUAL, GENDER 2, ORIENTATION 1 => RESPOSTA GENDER 0/1/2, ORIENTATION 0/1/2
+  //USUARIO TRANS HOMEM, HOMOSSEXUAL, GENDER 2, ORIENTATION 2 => RESPOSTA GENDER 1, ORIENTATION 1/2
+
+  //USUARIA TRANS MULHER, HETEROSEXUAL, GENDER 3, ORIENTATION 0 => RESPOSTA GENDER 0, ORIENTATION 0
+  //USUARIA TRANS MULHER, BISSEXUAL, GENDER 3, ORIENTATION 1 => RESPOSTA GENDER 0/1/2, ORIENTATION 0/1/2
+  //USUARIA TRANS MULHER, HOMOSSEXUAL, GENDER 3, ORIENTATION 2 => RESPOSTA GENDER 1, ORIENTATION 1/2
+
+
+  users.map(user => {
+    if(user.city == userI.city && user.interests.length > 0){
+      for(let i of user.interests){
+        console.log("=>",i.interestName)
+        console.log("=>",i.interestName in userI.interests)
+        
+      }
+    }
+  })
+  
   res.status(200).json({
     data: users,
     success: true,
