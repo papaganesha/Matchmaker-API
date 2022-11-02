@@ -182,7 +182,7 @@ controller.getUsers = async (req, res) => {
         //USUARIO HOMEM, BISSEXUAL, GENDER 0, ORIENTATION 1 => RESPOSTA GENDER 0/1/2, ORIENTATION 0/1/2
         if(userI.gender == 0 && userI.sexOrientation == 1){
           if(user.gender in [0,1,2,3] && user.sexOrientation in [0,1,2,3]){
-            console.log(user.fName)
+            console.log(user.fName, user.city, user.gender, user.sexOrientation)
           }
         }
       }
