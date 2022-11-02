@@ -175,7 +175,7 @@ controller.getUsers = async (req, res) => {
       if(user.city == userI.city){
         //USUARIO HOMEM, HETEROSEXUAL, GENDER 0, ORIENTATION 0 => RESPOSTA GENDER 1, ORIENTATION 0
         if(userI.gender == 0 && userI.sexOrientation == 0){
-          if(user.gender == 1 && user.sexOrientation == 1){
+          if(user.gender == 1 && user.sexOrientation == 0){
             console.log(user.fName)
           }
         }
