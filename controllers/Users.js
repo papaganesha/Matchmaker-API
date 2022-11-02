@@ -192,6 +192,7 @@ controller.getUsers = async (req, res) => {
         if(userI.gender == 1 && userI.sexOrientation == 0){
           console.log("mulher hetero")
           if(user.gender == 0 && user.sexOrientation == 0){
+            console.log(12)
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
           }
         }       
