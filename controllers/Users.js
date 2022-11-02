@@ -448,6 +448,7 @@ controller.addInterests = async (req, res) => {
         $push: {
           interests: {
             interestName: i.interestName,
+            iconName: i.iconName
           },
         },
       },
