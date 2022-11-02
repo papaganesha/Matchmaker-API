@@ -149,7 +149,7 @@ controller.SignIn = async (req, res) => {
 controller.getUsers = async (req, res) => {
   const id = req.userId
   const userI = await User.findById(id);
-  console.log(`MY CITY =>${userI.city}  MY INTERESTS =>  ${userI.interests}`)
+  // console.log(`MY CITY =>${userI.city}  MY INTERESTS =>  ${userI.interests}`)
   const users = await User.find();
   //CENARIOS
   //USUARIO HOMEM, HETEROSEXUAL, GENDER 0, ORIENTATION 0 => RESPOSTA GENDER 1, ORIENTATION 0
