@@ -170,11 +170,21 @@ controller.getUsers = async (req, res) => {
 
 
   users.map(user => {
-    if(user.city == userI.city && user.interests.length > 0){
-      for(let i of user.interests){
-        console.log("=>",i.interestName)
-        console.log("=>",i.interestName in userI.interests)
-        
+    if(user._id !== id){
+      //&& user.interests.length > 0
+      if(user.city == userI.city){
+        //USUARIO HOMEM, HETEROSEXUAL, GENDER 0, ORIENTATION 0 => RESPOSTA GENDER 1, ORIENTATION 0
+        if(userI.gender == 0 && userI.sexOrientation == 0){
+          if(user.gender == 1 && user.sexOrientation == 1){
+            console.log(user.fName)
+          }
+        }
+        //USUARIO HOMEM, BISSEXUAL, GENDER 0, ORIENTATION 1 => RESPOSTA GENDER 0/1/2, ORIENTATION 0/1/2
+        if(userI.gender == 0 && userI.sexOrientation == 1){
+          if(user.gender in [0,1,2,3] && user.sexOrientation in [0,1,2,3]){
+            console.log(user.fName)
+          }
+        }
       }
     }
   })
