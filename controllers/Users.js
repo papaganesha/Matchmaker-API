@@ -418,12 +418,22 @@ controller.getUserById = async (req, res) => {
 controller.getMatches = async (req, res) => {
   //PRA CADA MATCH, PEGAR O ID E CAPTURAR ID, FNAME, SNAME, MAINPICTURE
   var id = req.userId;
+  const data = []
   const user = await User.findById(id)
   if (user.matchs !== []) {
     for (let i of user.matchs) {
-      console.log(i)
+      //console.log(i)
+      await User.findById(i._id)
+      .then(result => data.push(result))
+      .catch((err) => {
+        res.status(500).json({
+          error: err,
+          success: false,
+        });
+      });
     }
   }
+  console.log(data)
   if (!user) {
     res.status(500).json({
       error: "Usuario não existente",
