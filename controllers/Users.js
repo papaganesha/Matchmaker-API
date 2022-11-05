@@ -423,7 +423,7 @@ controller.getMatches = async (req, res) => {
   if (user.matchs !== []) {
     for (let i of user.matchs) {
       //console.log(i)
-      await User.findById(i._id)
+      await User.findById(i.matchId)
       .then(result => data.push(result))
       .catch((err) => {
         res.status(500).json({
