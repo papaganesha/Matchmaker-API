@@ -170,62 +170,62 @@ controller.getUsers = async (req, res) => {
 
 
   users.map(user => {
-    if(user._id !== id){
+    if (user._id !== id) {
       //&& user.interests.length > 0
-      if(user.city == userI.city){
+      if (user.city == userI.city) {
 
         //USUARIO HOMEM, HETEROSEXUAL, GENDER 0, ORIENTATION 0 => RESPOSTA GENDER 1, ORIENTATION 0
-        if(userI.gender == 0 && userI.sexOrientation == 0){
+        if (userI.gender == 0 && userI.sexOrientation == 0) {
           console.log("homem hetero")
-          if(user.gender == 1 && user.sexOrientation == 0){
+          if (user.gender == 1 && user.sexOrientation == 0) {
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
           }
         }
 
         //USUARIO HOMEM, BISSEXUAL, GENDER 0, ORIENTATION 1 => RESPOSTA GENDER 0/1/2, ORIENTATION 0/1/2
-        if(userI.gender == 0 && userI.sexOrientation == 1){
+        if (userI.gender == 0 && userI.sexOrientation == 1) {
           console.log("homem bi")
-          if(user.gender in [0,1,2,3] && user.sexOrientation in [0,1,2,3]){
+          if (user.gender in [0, 1, 2, 3] && user.sexOrientation in [0, 1, 2, 3]) {
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
           }
         }
 
         //USUARIO HOMEM, HOMOSSEXUAL, GENDER 0, ORIENTATION 2 => RESPOSTA GENDER 0/2, ORIENTATION 1/2
-        if(userI.gender == 0 && userI.sexOrientation == 2){
+        if (userI.gender == 0 && userI.sexOrientation == 2) {
           console.log("homem gay")
-          if(user.gender in [0,2] && user.sexOrientation in [1,2]){
+          if (user.gender in [0, 2] && user.sexOrientation in [1, 2]) {
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
           }
         }
 
         //USUARIA MULHER, HETEROSEXUAL, GENDER 1, ORIENTATION 0 => RESPOSTA GENDER 0, ORIENTATION 0
-        if(userI.gender == 1 && userI.sexOrientation == 0){
+        if (userI.gender == 1 && userI.sexOrientation == 0) {
           console.log("mulher hetero")
-          if(user.gender == 0 && user.sexOrientation == 0){
+          if (user.gender == 0 && user.sexOrientation == 0) {
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
           }
-        }   
-        
+        }
+
         //USUARIA MULHER, BISSEXUAL, GENDER 1, ORIENTATION 1 => RESPOSTA GENDER 0/1/2, ORIENTATION 0/1/2
-        if(userI.gender == 1 && userI.sexOrientation == 1){
+        if (userI.gender == 1 && userI.sexOrientation == 1) {
           console.log("mulher bi")
-          if(user.gender in [0,1,2,3] && user.sexOrientation in [0,1,2,3]){
+          if (user.gender in [0, 1, 2, 3] && user.sexOrientation in [0, 1, 2, 3]) {
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
           }
-        }   
+        }
 
         //USUARIA MULHER, HOMOSSEXUAL, GENDER 1, ORIENTATION 2 => RESPOSTA GENDER 1, ORIENTATION 1/2
-        if(userI.gender == 1 && userI.sexOrientation == 2){
+        if (userI.gender == 1 && userI.sexOrientation == 2) {
           console.log("mulher lesbica")
-          if(user.gender == 1 && user.sexOrientation in [1,2]){
+          if (user.gender == 1 && user.sexOrientation in [1, 2]) {
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
           }
-        }      
+        }
 
       }
     }
   })
-  
+
   res.status(200).json({
     data: users,
     success: true,
@@ -242,26 +242,26 @@ controller.uploadMainPic = async (req, res, next) => {
     height: 500,
     crop: 'fill',
   })
-  .then(async(res) => {
-    await User.findByIdAndUpdate(id,
-      {$set: { mainPicture: res.url }},
-      { new: true, runValidators: true })
-      .then(res =>{
-        console.log(res)
-      })
-      .catch(err => {
-        console.log("drip here 1") 
-        console.log(err.errors[i].message)
-        res.status(500).json({
-          error: err.errors[i].message,
-          success: false,
+    .then(async (res) => {
+      await User.findByIdAndUpdate(id,
+        { $set: { mainPicture: res.url } },
+        { new: true, runValidators: true })
+        .then(res => {
+          console.log(res)
         })
-      })
+        .catch(err => {
+          console.log("drip here 1")
+          console.log(err.errors[i].message)
+          res.status(500).json({
+            error: err.errors[i].message,
+            success: false,
+          })
+        })
 
-  }).catch(err => {
-    console.log("drip here 2")
-    res.status(500).json({ success: false, error: err.message });
-  })
+    }).catch(err => {
+      console.log("drip here 2")
+      res.status(500).json({ success: false, error: err.message });
+    })
 
   const user = await User.findById(id);
   if (user) {
@@ -269,7 +269,7 @@ controller.uploadMainPic = async (req, res, next) => {
       data: user,
       success: true,
     })
-  }  
+  }
 
 }
 
@@ -282,26 +282,26 @@ controller.uploadPictures = async (req, res, next) => {
     height: 500,
     crop: 'fill',
   })
-  .then(async(res) => {
-    await User.findByIdAndUpdate(id,
-      {$push: { pictures: res.url }},
-      { new: true, runValidators: true })
-      .then(res =>{
-        console.log(res)
-      })
-      .catch(err => {
-        console.log("drip here 1") 
-        console.log(err.errors[i].message)
-        res.status(500).json({
-          error: err.errors[i].message,
-          success: false,
+    .then(async (res) => {
+      await User.findByIdAndUpdate(id,
+        { $push: { pictures: res.url } },
+        { new: true, runValidators: true })
+        .then(res => {
+          console.log(res)
         })
-      })
+        .catch(err => {
+          console.log("drip here 1")
+          console.log(err.errors[i].message)
+          res.status(500).json({
+            error: err.errors[i].message,
+            success: false,
+          })
+        })
 
-  }).catch(err => {
-    console.log("drip here 2")
-    res.status(500).json({ success: false, error: err.message });
-  })
+    }).catch(err => {
+      console.log("drip here 2")
+      res.status(500).json({ success: false, error: err.message });
+    })
 
   const user = await User.findById(id);
   if (user) {
@@ -309,7 +309,7 @@ controller.uploadPictures = async (req, res, next) => {
       data: user,
       success: true,
     })
-  }  
+  }
 
 }
 
@@ -419,8 +419,8 @@ controller.getMatches = async (req, res) => {
   //PRA CADA MATCH, PEGAR O ID E CAPTURAR ID, FNAME, SNAME, MAINPICTURE
   var id = req.userId;
   const user = await User.findById(id)
-  if(user.matchs !== []){
-    for(let i of user.matchs){
+  if (user.matchs !== []) {
+    for (let i of user.matchs) {
       console.log(i)
     }
   }
@@ -656,22 +656,40 @@ controller.addLike = async (req, res) => {
           },
           { new: true }
         )
-          .then((result) => {
+          .then(result => {
             //CHAMAR METODO QUE CADASTRA O MATCH PARA AMBOS USUARIOS
-            res.status(201).json({
-              message: "É um match",
-              success: true,
-              isMatch: true,
-            });
-          })
-          .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-              error: err,
-              success: false,
-            });
-          });
-      }
+            User.findByIdAndUpdate(
+              matchId,
+              {
+                $push: {
+                  matchs: {
+                    matchId: id,
+                  },
+                },
+              },
+              { new: true }
+            ).then(result => {
+              res.status(201).json({
+                message: "É um match",
+                success: true,
+                isMatch: true,
+              });
+            })
+              .catch((err) => {
+                console.log(err);
+                res.status(500).json({
+                  error: err,
+                  success: false,
+                });
+              })
+              .catch((err) => {
+                console.log(err);
+                res.status(500).json({
+                  error: err,
+                  success: false,
+                });
+              });
+          }
     })
     .catch((err) => {
       console.log(err);
