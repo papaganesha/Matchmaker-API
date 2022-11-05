@@ -415,6 +415,26 @@ controller.getUserById = async (req, res) => {
   }
 };
 
+controller.getMatches = async (req, res) => {
+  //PRA CADA MATCH, PEGAR O ID E CAPTURAR ID, FNAME, SNAME, MAINPICTURE
+  var id = req.userId;
+  const user = await User.findById(id)
+  for(let i of user.matches){
+    console.log(i)
+  }
+  if (!user) {
+    res.status(500).json({
+      error: "Usuario não existente",
+      success: true,
+    });
+  } else {
+    res.status(200).json({
+      data: user.matchs,
+      success: true,
+    });
+  }
+};
+
 controller.getUserAge = async (req, res) => {
   var id = req.userId;
   let { AgeFromDateString } = require("age-calculator");
@@ -627,7 +647,7 @@ controller.addLike = async (req, res) => {
           id,
           {
             $push: {
-              likes: {
+              matchs: {
                 matchId: matchId,
               },
             },
