@@ -46,14 +46,6 @@ var emailValidator = [
   })
 ]
 
-// VALIDAND TAMANHO DO RESUMO
-var summaryValidator = [
-  validate({
-    validator: 'isLength',
-    arguments: [0, 400],
-    message: 'Resumo deve ter no maximo 400 carácteres'
-  }),
-]
 
 // VALIDAND TAMANHO DO RESUMO
 var summaryValidator = [
@@ -96,7 +88,7 @@ const UserSchema = new Schema({
   matchs: [
     {
       matchId: { type: String },
-      matchDate: { type: Date },
+      matchDate: { type: Date, default: Date.now },
       animatedDone: { type: Boolean, default: 0 },
     },
   ],
