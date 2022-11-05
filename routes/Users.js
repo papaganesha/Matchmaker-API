@@ -3,7 +3,7 @@ const multer = require('multer');
 
 const isAuth = require('../middlewares/AuthenticationHandler')
 const apiUrl = process.env.API_URL
-const {getUsers, getUserById, getUserAge, SignUp, SignIn, getUserInterests, updateUser, updateUserInfo, deleteUser, addInterests, deleteInterest, addLike, uploadMainPic, uploadPictures} = require('../controllers/Users')
+const {getUsers, getUserById, getUserAge, SignUp, SignIn, getUserInterests, updateUser, updateUserInfo, deleteUser, addInterests, deleteInterest, addLike, uploadMainPic, uploadPictures, getMatches} = require('../controllers/Users')
 
 
 const storage = multer.diskStorage({});
