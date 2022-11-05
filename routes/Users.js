@@ -22,7 +22,7 @@ router.get(`${apiUrl}/users`, isAuth, getUsers)
 
 router.get(`${apiUrl}/user`, isAuth, getUserById)
 
-router.get(`${apiUrl}/matches`, isAuth, getMatches)
+router.get(`${apiUrl}/matchs`, isAuth, getMatches)
 
 router.get(`${apiUrl}/user/age`, isAuth, getUserAge)
 

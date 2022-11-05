@@ -419,8 +419,10 @@ controller.getMatches = async (req, res) => {
   //PRA CADA MATCH, PEGAR O ID E CAPTURAR ID, FNAME, SNAME, MAINPICTURE
   var id = req.userId;
   const user = await User.findById(id)
-  for(let i of user.matches){
-    console.log(i)
+  if(user.matchs !== []){
+    for(let i of user.matchs){
+      console.log(i)
+    }
   }
   if (!user) {
     res.status(500).json({
