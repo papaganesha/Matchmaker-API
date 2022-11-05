@@ -656,7 +656,7 @@ controller.addLike = async (req, res) => {
           },
           { new: true }
         )
-          .then(result => {
+          .then((result) => {
             //CHAMAR METODO QUE CADASTRA O MATCH PARA AMBOS USUARIOS
             User.findByIdAndUpdate(
               matchId,
@@ -682,14 +682,15 @@ controller.addLike = async (req, res) => {
                   success: false,
                 });
               })
-              .catch((err) => {
-                console.log(err);
-                res.status(500).json({
-                  error: err,
-                  success: false,
-                });
-              });
-          }
+          })
+          .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+              error: err,
+              success: false,
+            });
+          });
+      }
     })
     .catch((err) => {
       console.log(err);
