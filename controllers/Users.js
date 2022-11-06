@@ -441,7 +441,7 @@ controller.getMatchs = async (req, res) => {
     });
   } else {
     res.status(200).json({
-      data: data
+      data: data,
       success: true,
     });
   }
