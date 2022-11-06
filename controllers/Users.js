@@ -415,7 +415,7 @@ controller.getUserById = async (req, res) => {
   }
 };
 
-controller.getMatches = async (req, res) => {
+controller.getMatchs = async (req, res) => {
   //PRA CADA MATCH, PEGAR O ID E CAPTURAR ID, FNAME, SNAME, MAINPICTURE
   var id = req.userId;
   const data = []
@@ -441,7 +441,7 @@ controller.getMatches = async (req, res) => {
     });
   } else {
     res.status(200).json({
-      data: user.matchs,
+      data: data
       success: true,
     });
   }
