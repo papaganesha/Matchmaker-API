@@ -316,7 +316,6 @@ controller.uploadPictures = async (req, res, next) => {
 controller.updateUserInfo = async (req, res, next) => {
   const id = req.userId
 
-
   for (i in req.body) {
     var set = {};
     set[i] = req.body[i]
@@ -325,6 +324,12 @@ controller.updateUserInfo = async (req, res, next) => {
     await User.findByIdAndUpdate(id, {
       $set: set,
     }, { new: true, runValidators: true })
+      .then(result => {
+        res.status(200).json({
+          message: "Update efetuado com sucesso",
+          success: true,
+        })
+      })
       .catch(err => {
         console.log(err.errors[i].message)
         res.status(500).json({
@@ -424,13 +429,13 @@ controller.getMatchs = async (req, res) => {
     for (let i of user.matchs) {
       //console.log(i)
       await User.findById(i.matchId)
-      .then(result => data.push({matchId: result._id, fName:result.fName, sName:result.sName, birthDate: result.birthDate, mainPicture: result.mainPicture}))
-      .catch((err) => {
-        res.status(500).json({
-          error: err,
-          success: false,
+        .then(result => data.push({ matchId: result._id, fName: result.fName, sName: result.sName, birthDate: result.birthDate, mainPicture: result.mainPicture }))
+        .catch((err) => {
+          res.status(500).json({
+            error: err,
+            success: false,
+          });
         });
-      });
     }
   }
   console.log(data)

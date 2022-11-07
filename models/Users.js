@@ -8,7 +8,7 @@ var validate = require('mongoose-validator')
 var nameValidator = [
   validate({
     validator: 'isLength',
-    arguments: [5, 50],
+    arguments: [3, 50],
     message: 'Nome deve ter entre 3 e 50 carácteres'
   }),
   // validate({
@@ -52,7 +52,7 @@ var summaryValidator = [
   validate({
     validator: 'isLength',
     arguments: [10, 400],
-    message: 'Resumo deve ter no minimo 10 carácteres e no maximo 400 carácteres'
+    message: 'Resumo deve ter no minimo 10 carácteres e no maximo 500 carácteres'
   }),
 ]
 
