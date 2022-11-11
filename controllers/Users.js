@@ -169,7 +169,7 @@ controller.getUsers = async (req, res) => {
   //USUARIA TRANS MULHER, HOMOSSEXUAL, GENDER 3, ORIENTATION 2 => RESPOSTA GENDER 1, ORIENTATION 1/2
 
 
-  users.map(user => {
+  let data = users.map(user => {
     if (user._id !== id) {
       //&& user.interests.length > 0
       if (user.city == userI.city) {
@@ -179,6 +179,7 @@ controller.getUsers = async (req, res) => {
           console.log("homem hetero")
           if (user.gender == 1 && user.sexOrientation == 0) {
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
+            return userI
           }
         }
 
@@ -187,6 +188,7 @@ controller.getUsers = async (req, res) => {
           console.log("homem bi")
           if (user.gender in [0, 1, 2, 3] && user.sexOrientation in [0, 1, 2, 3]) {
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
+            return userI
           }
         }
 
@@ -195,6 +197,7 @@ controller.getUsers = async (req, res) => {
           console.log("homem gay")
           if (user.gender in [0, 2] && user.sexOrientation in [1, 2]) {
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
+            return userI
           }
         }
 
@@ -203,6 +206,7 @@ controller.getUsers = async (req, res) => {
           console.log("mulher hetero")
           if (user.gender == 0 && user.sexOrientation == 0) {
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
+            return userI
           }
         }
 
@@ -211,6 +215,7 @@ controller.getUsers = async (req, res) => {
           console.log("mulher bi")
           if (user.gender in [0, 1, 2, 3] && user.sexOrientation in [0, 1, 2, 3]) {
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
+            return userI
           }
         }
 
@@ -219,6 +224,7 @@ controller.getUsers = async (req, res) => {
           console.log("mulher lesbica")
           if (user.gender == 1 && user.sexOrientation in [1, 2]) {
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
+            return userI
           }
         }
 
@@ -227,7 +233,7 @@ controller.getUsers = async (req, res) => {
   })
 
   res.status(200).json({
-    data: users,
+    data: data,
     success: true,
   });
 };
