@@ -315,7 +315,7 @@ controller.uploadPictures = async (req, res, next) => {
 
 controller.updateUserInfo = async (req, res, next) => {
   const id = req.userId
-
+  let errors, checks
   for (i in req.body) {
     var set = {};
     set[i] = req.body[i]
@@ -325,18 +325,27 @@ controller.updateUserInfo = async (req, res, next) => {
       $set: set,
     }, { new: true, runValidators: true })
       .then(result => {
+        
+        checks++
+      })
+      .catch(err => {
+        console.log(err)
+
+        error++
+      })
+
+      if(checks == req.body.length){
         res.status(200).json({
           message: "Update efetuado com sucesso",
           success: true,
         })
-      })
-      .catch(err => {
-        console.log(err)
+      }
+      if(error > 1){
         res.status(500).json({
-          error: err.errors.message,
+          error: err,
           success: false,
         })
-      })
+      }
 
   }
 
