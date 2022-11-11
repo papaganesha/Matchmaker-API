@@ -340,7 +340,7 @@ controller.updateUserInfo = async (req, res, next) => {
           success: true,
         })
       }
-      if(error > 1){
+      if(errors > 0){
         res.status(500).json({
           error: err,
           success: false,
