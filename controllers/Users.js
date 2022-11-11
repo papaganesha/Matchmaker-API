@@ -331,9 +331,9 @@ controller.updateUserInfo = async (req, res, next) => {
         })
       })
       .catch(err => {
-        console.log(err.errors[i].message)
+        console.log(err)
         res.status(500).json({
-          error: err.errors[i].message,
+          error: err.errors.message,
           success: false,
         })
       })
