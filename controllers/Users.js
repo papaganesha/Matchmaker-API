@@ -168,13 +168,14 @@ controller.getUsers = async (req, res) => {
   //USUARIA TRANS MULHER, BISSEXUAL, GENDER 3, ORIENTATION 1 => RESPOSTA GENDER 0/1/2, ORIENTATION 0/1/2
   //USUARIA TRANS MULHER, HOMOSSEXUAL, GENDER 3, ORIENTATION 2 => RESPOSTA GENDER 1, ORIENTATION 1/2
 
-
+  console.log("VOCE MESMO => ",userI.fName, userI.city, userI.gender, userI.sexOrientation)
   let data = []
   users.map(user => {
     if (user._id !== id) {
       //&& user.interests.length > 0
       if (user.city == userI.city) {
         console.log("MESMA CIDADE")
+        
         //USUARIO HOMEM, HETEROSEXUAL, GENDER 0, ORIENTATION 0 => RESPOSTA GENDER 1, ORIENTATION 0
         if (userI.gender == 0 && userI.sexOrientation == 0) {
           console.log("homem hetero")
