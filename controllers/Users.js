@@ -177,7 +177,9 @@ controller.getUsers = async (req, res) => {
         console.log("MESMA CIDADE")
         //USUARIO HOMEM, HETEROSEXUAL, GENDER 0, ORIENTATION 0 => RESPOSTA GENDER 1, ORIENTATION 0
         if (userI.gender == 0 && userI.sexOrientation == 0) {
+          
           if (user.gender == 1 && user.sexOrientation == 0) {
+
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
             data.push(userI) 
           }
@@ -444,7 +446,7 @@ controller.getMatchs = async (req, res) => {
     for (let i of user.matchs) {
       //console.log(i)
       await User.findById(i.matchId)
-        .then(result => data.push({ matchId: result._id, fName: result.fName, sName: result.sName, birthDate: result.birthDate, mainPicture: result.mainPicture }))
+        .then(result => data.push(result))
         .catch((err) => {
           res.status(500).json({
             error: err,
