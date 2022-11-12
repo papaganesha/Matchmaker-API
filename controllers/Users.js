@@ -183,7 +183,7 @@ controller.getUsers = async (req, res) => {
           if (user.gender == 1 && user.sexOrientation == 0) {
             console.log("homem hetero display")
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
-            data.push(userI) 
+            data.push(user) 
           }
         }
 
@@ -194,7 +194,7 @@ controller.getUsers = async (req, res) => {
             console.log("homem bi display")
 
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
-            data.push(userI) 
+            data.push(user) 
           }
         }
 
@@ -205,7 +205,7 @@ controller.getUsers = async (req, res) => {
             console.log("homem gay display")
 
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
-            data.push(userI) 
+            data.push(user) 
           }
         }
 
@@ -216,7 +216,7 @@ controller.getUsers = async (req, res) => {
             console.log("mulher hetero display")
 
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
-            data.push(userI) 
+            data.push(user) 
           }
         }
 
@@ -227,7 +227,7 @@ controller.getUsers = async (req, res) => {
             console.log("mulher bi display")
 
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
-            data.push(userI) 
+            data.push(user) 
           }
         }
 
@@ -238,7 +238,7 @@ controller.getUsers = async (req, res) => {
             console.log("mulher lesbica display")
 
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
-            data.push(userI) 
+            data.push(user) 
           }
         }
 
