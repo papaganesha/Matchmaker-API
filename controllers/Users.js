@@ -174,10 +174,9 @@ controller.getUsers = async (req, res) => {
     if (user._id !== id) {
       //&& user.interests.length > 0
       if (user.city == userI.city) {
-
+        console.log("MESMA CIDADE")
         //USUARIO HOMEM, HETEROSEXUAL, GENDER 0, ORIENTATION 0 => RESPOSTA GENDER 1, ORIENTATION 0
         if (userI.gender == 0 && userI.sexOrientation == 0) {
-          console.log("homem hetero")
           if (user.gender == 1 && user.sexOrientation == 0) {
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
             data.push(userI) 
@@ -232,7 +231,7 @@ controller.getUsers = async (req, res) => {
       }
     }
   })
-
+  console.log(">>> ",data)
   res.status(200).json({
     data: data,
     success: true,
