@@ -172,10 +172,11 @@ controller.getUsers = async (req, res) => {
   let data = []
   users.map(user => {
     if (user._id !== id) {
+      console.log(`MY ID ${id} -- DISPLAY ID ${user._id}`)
       //&& user.interests.length > 0
       if (user.city == userI.city) {
         console.log("MESMA CIDADE")
-        
+
         //USUARIO HOMEM, HETEROSEXUAL, GENDER 0, ORIENTATION 0 => RESPOSTA GENDER 1, ORIENTATION 0
         if (userI.gender == 0 && userI.sexOrientation == 0) {
           console.log("homem hetero")
