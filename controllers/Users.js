@@ -171,7 +171,7 @@ controller.getUsers = async (req, res) => {
   console.log("VOCE MESMO => ",userI.fName, userI.city, userI.gender, userI.sexOrientation)
   let data = []
   users.map(user => {
-    if (user._id !== id) {
+    if (user._id != id) {
       console.log(`MY ID ${id} -- DISPLAY ID ${user._id}`)
       //&& user.interests.length > 0
       if (user.city == userI.city) {
