@@ -180,8 +180,8 @@ controller.getUsers = async (req, res) => {
         //USUARIO HOMEM, HETEROSEXUAL, GENDER 0, ORIENTATION 0 => RESPOSTA GENDER 1, ORIENTATION 0
         if (userI.gender == 0 && userI.sexOrientation == 0) {
           console.log("homem hetero")
-          if (user.gender == 1 && user.sexOrientation == 0) {
-            console.log("homem hetero display")
+          if (user.gender == 1 && user.sexOrientation in [0,1]) {
+            console.log("DISPLAY MULHERES HETEROS")
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
             data.push(user) 
           }
@@ -191,7 +191,7 @@ controller.getUsers = async (req, res) => {
         if (userI.gender == 0 && userI.sexOrientation == 1) {
           console.log("homem bi")
           if (user.gender in [0, 1, 2, 3] && user.sexOrientation in [0, 1, 2, 3]) {
-            console.log("homem bi display")
+            console.log("DISPLAY HOMENS, MULHERES, HOMENS TRANS, MULHERES TRANS DE TODAS ORIENTAÇÕES")
 
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
             data.push(user) 
@@ -202,8 +202,7 @@ controller.getUsers = async (req, res) => {
         if (userI.gender == 0 && userI.sexOrientation == 2) {
           console.log("homem gay")
           if (user.gender in [0, 2] && user.sexOrientation in [1, 2]) {
-            console.log("homem gay display")
-
+            console.log("DISPLAY HOMENS, HOMENS TRANS QUE SEJAM BI OU GAY")
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
             data.push(user) 
           }
@@ -212,9 +211,8 @@ controller.getUsers = async (req, res) => {
         //USUARIA MULHER, HETEROSEXUAL, GENDER 1, ORIENTATION 0 => RESPOSTA GENDER 0, ORIENTATION 0
         if (userI.gender == 1 && userI.sexOrientation == 0) {
           console.log("mulher hetero")
-          if (user.gender == 0 && user.sexOrientation == 0) {
-            console.log("mulher hetero display")
-
+          if (user.gender == 0 && user.sexOrientation in [0, 1]) {
+            console.log("DISPLAY HOMENS HETEROS")
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
             data.push(user) 
           }
@@ -224,7 +222,7 @@ controller.getUsers = async (req, res) => {
         if (userI.gender == 1 && userI.sexOrientation == 1) {
           console.log("mulher bi")
           if (user.gender in [0, 1, 2, 3] && user.sexOrientation in [0, 1, 2, 3]) {
-            console.log("mulher bi display")
+            console.log("DISPLAY HOMENS, MULHERES, HOMENS TRANS, MULHERES TRANS DE TODAS ORIENTAÇÕES")
 
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
             data.push(user) 
@@ -235,7 +233,8 @@ controller.getUsers = async (req, res) => {
         if (userI.gender == 1 && userI.sexOrientation == 2) {
           console.log("mulher lesbica")
           if (user.gender == 1 && user.sexOrientation in [1, 2]) {
-            console.log("mulher lesbica display")
+            console.log("DISPLAY MULHERES, MULHERES TRANS QUE SEJAM BI OU GAY")
+
 
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
             data.push(user) 
