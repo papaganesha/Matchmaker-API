@@ -5,7 +5,7 @@ var mongoose = require("mongoose");
 const multer = require('multer');
 const sharp = require('sharp');
 const cloudinary = require('../helpers/imageUpload');
-const Cometchat = require('@cometchat-pro/chat')
+const CometChat = require('@cometchat-pro/chat')
 
 
 const controller = {};
