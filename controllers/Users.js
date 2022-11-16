@@ -449,6 +449,9 @@ controller.getUserById = async (req, res) => {
   }
 };
 
+
+
+
 const loginCometchat = (UID, authKey) => {
   CometChat.login(UID, authKey).then(
     user => {
@@ -477,7 +480,6 @@ const loginCometchat = (UID, authKey) => {
 controller.getMatchs = async (req, res) => {
   //PRA CADA MATCH, PEGAR O ID E CAPTURAR ID, FNAME, SNAME, MAINPICTURE
   var id = req.userId;
-  loginCometchat(id, "cefa05028acbf59fc97a08e61ad0f14765251514")
   let noMessaged = []
   let alreadyMessaged = []
   const user = await User.findById(id)
