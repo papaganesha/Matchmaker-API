@@ -5,7 +5,7 @@ var mongoose = require("mongoose");
 const multer = require('multer');
 const sharp = require('sharp');
 const cloudinary = require('../helpers/imageUpload');
-const CometChat = require('@cometchat-pro/chat')
+const Cometchat = require ('@cometchat-pro/react-native-chat')
 
 
 const controller = {};
@@ -169,7 +169,7 @@ controller.getUsers = async (req, res) => {
   //USUARIA TRANS MULHER, BISSEXUAL, GENDER 3, ORIENTATION 1 => RESPOSTA GENDER 0/1/2, ORIENTATION 0/1/2
   //USUARIA TRANS MULHER, HOMOSSEXUAL, GENDER 3, ORIENTATION 2 => RESPOSTA GENDER 1, ORIENTATION 1/2
 
-  console.log("VOCE MESMO => ", userI.fName, userI.city, userI.gender, userI.sexOrientation)
+  console.log("VOCE MESMO => ",userI.fName, userI.city, userI.gender, userI.sexOrientation)
   let data = []
   users.map(user => {
     if (user._id != id) {
@@ -181,10 +181,10 @@ controller.getUsers = async (req, res) => {
         //USUARIO HOMEM, HETEROSEXUAL, GENDER 0, ORIENTATION 0 => RESPOSTA GENDER 1, ORIENTATION 0
         if (userI.gender == 0 && userI.sexOrientation == 0) {
           console.log("homem hetero")
-          if (user.gender == 1 && user.sexOrientation in [0, 1]) {
+          if (user.gender == 1 && user.sexOrientation in [0,1]) {
             console.log("DISPLAY MULHERES HETEROS")
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
-            data.push(user)
+            data.push(user) 
           }
         }
 
@@ -195,7 +195,7 @@ controller.getUsers = async (req, res) => {
             console.log("DISPLAY HOMENS, MULHERES, HOMENS TRANS, MULHERES TRANS DE TODAS ORIENTAÇÕES")
 
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
-            data.push(user)
+            data.push(user) 
           }
         }
 
@@ -205,7 +205,7 @@ controller.getUsers = async (req, res) => {
           if (user.gender in [0, 2] && user.sexOrientation in [1, 2]) {
             console.log("DISPLAY HOMENS, HOMENS TRANS QUE SEJAM BI OU GAY")
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
-            data.push(user)
+            data.push(user) 
           }
         }
 
@@ -215,7 +215,7 @@ controller.getUsers = async (req, res) => {
           if (user.gender == 0 && user.sexOrientation in [0, 1]) {
             console.log("DISPLAY HOMENS HETEROS")
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
-            data.push(user)
+            data.push(user) 
           }
         }
 
@@ -226,7 +226,7 @@ controller.getUsers = async (req, res) => {
             console.log("DISPLAY HOMENS, MULHERES, HOMENS TRANS, MULHERES TRANS DE TODAS ORIENTAÇÕES")
 
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
-            data.push(user)
+            data.push(user) 
           }
         }
 
@@ -238,14 +238,14 @@ controller.getUsers = async (req, res) => {
 
 
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
-            data.push(user)
+            data.push(user) 
           }
         }
 
       }
     }
   })
-  console.log(">>> ", data)
+  console.log(">>> ",data)
   res.status(200).json({
     data: data,
     success: true,
@@ -345,7 +345,7 @@ controller.updateUserInfo = async (req, res, next) => {
       $set: set,
     }, { new: true, runValidators: true })
       .then(result => {
-
+        
         checks++
       })
       .catch(err => {
@@ -354,18 +354,18 @@ controller.updateUserInfo = async (req, res, next) => {
         error++
       })
 
-    if (checks == req.body.length) {
-      res.status(200).json({
-        message: "Update efetuado com sucesso",
-        success: true,
-      })
-    }
-    if (errors > 0) {
-      res.status(500).json({
-        error: err,
-        success: false,
-      })
-    }
+      if(checks == req.body.length){
+        res.status(200).json({
+          message: "Update efetuado com sucesso",
+          success: true,
+        })
+      }
+      if(errors > 0){
+        res.status(500).json({
+          error: err,
+          success: false,
+        })
+      }
 
   }
 
@@ -449,72 +449,16 @@ controller.getUserById = async (req, res) => {
   }
 };
 
-
-
-
-const loginCometchat = (UID, authKey) => {
-  CometChat.login(UID, authKey).then(
-    user => {
-        console.log('Login Successful:', { user })
-        createMsgListener()
-        // let GUID = "global"
-        // let password = ""
-        // let groupType = CometChat.GROUP_TYPE.PUBLIC
-        // CometChat.joinGroup(GUID, groupType, password).then(
-        //   group => {
-        //     console.log('Group joined successfully:', group)
-        //   }, error => {
-        //     console.log('Group joining failed with exception:', error)
-
-        //   }
-        // )
-
-    }
-    , error => {
-        console.log('Login failed with exception:', { error })
-        setError(error)
-    },
-)
-}
-
 controller.getMatchs = async (req, res) => {
   //PRA CADA MATCH, PEGAR O ID E CAPTURAR ID, FNAME, SNAME, MAINPICTURE
   var id = req.userId;
-  let noMessaged = []
-  let alreadyMessaged = []
+  const data = []
   const user = await User.findById(id)
   if (user.matchs !== []) {
     for (let i of user.matchs) {
       //console.log(i)
       await User.findById(i.matchId)
-        .then(result => {
-          let UID = user._id;
-          let limit = 50;
-          let messagesRequest = new CometChat.MessagesRequestBuilder()
-            .setUID(UID)
-            .setLimit(limit)
-            .build();
-
-          messagesRequest.fetchPrevious().then(
-            messages => {
-              if (messages.length > 0) {
-                let checkUser = alreadyMessaged.filter(sender => sender._id == user._id)
-                if (checkUser.length == 0) {
-                  alreadyMessaged.push([...alreadyMessaged, result])
-                }
-
-              } else {
-                let checkUser = noMessaged.filter(sender => sender._id == user._id)
-                if (checkUser.length == 0) {
-                  noMessaged.push([...noMessaged, result])
-                }
-
-              }
-            }, error => {
-              console.log(error)
-              setError(error)
-            })
-        })
+        .then(result => data.push(result))
         .catch((err) => {
           res.status(500).json({
             error: err,
@@ -523,9 +467,7 @@ controller.getMatchs = async (req, res) => {
         });
     }
   }
-  console.log("NO MESSAGED",noMessaged)
-  console.log("ALREADY MESSAGED",alreadyMessaged)
-
+  console.log(data)
   if (!user) {
     res.status(500).json({
       error: "Usuario não existente",
@@ -533,7 +475,7 @@ controller.getMatchs = async (req, res) => {
     });
   } else {
     res.status(200).json({
-      data: {noMessaged, alreadyMessaged},
+      data: data,
       success: true,
     });
   }
