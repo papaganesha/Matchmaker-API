@@ -1,11 +1,7 @@
 const User = require("../models/Users");
 const bcrypt = require("bcrypt");
 const moment = require("moment");
-var mongoose = require("mongoose");
-const multer = require('multer');
-const sharp = require('sharp');
 const cloudinary = require('../helpers/imageUpload');
-const Cometchat = require ('@cometchat-pro/react-native-chat')
 
 
 const controller = {};
