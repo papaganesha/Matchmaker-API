@@ -1,4 +1,7 @@
 const jwt = require('jsonwebtoken')
+const CometChat = require('@cometchat-pro/chat')
+
+
 
 const initializeCometchat = (UID) => {
     //VARIAVEIS AMBIENTE DA APLICAÇÃO
