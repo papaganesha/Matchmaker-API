@@ -449,10 +449,35 @@ controller.getUserById = async (req, res) => {
   }
 };
 
-controller.getMatchs = async (req, res) => {
+const loginCometchat = (UID, authKey) => {
+  CometChat.login(UID, authKey).then(
+    user => {
+        console.log('Login Successful:', { user })
+        createMsgListener()
+        // let GUID = "global"
+        // let password = ""
+        // let groupType = CometChat.GROUP_TYPE.PUBLIC
+        // CometChat.joinGroup(GUID, groupType, password).then(
+        //   group => {
+        //     console.log('Group joined successfully:', group)
+        //   }, error => {
+        //     console.log('Group joining failed with exception:', error)
 
+        //   }
+        // )
+
+    }
+    , error => {
+        console.log('Login failed with exception:', { error })
+        setError(error)
+    },
+)
+}
+
+controller.getMatchs = async (req, res) => {
   //PRA CADA MATCH, PEGAR O ID E CAPTURAR ID, FNAME, SNAME, MAINPICTURE
   var id = req.userId;
+  loginCometchat(id, "cefa05028acbf59fc97a08e61ad0f14765251514")
   let noMessaged = []
   let alreadyMessaged = []
   const user = await User.findById(id)
