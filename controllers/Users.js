@@ -332,7 +332,7 @@ controller.uploadPictures = async (req, res, next) => {
 controller.getConversationInitialized = async (req, res, next) => {
   const id = req.userId
   const {matchId} = req.body
-  let isConversationInitialized
+  let isConversationInitialized = false
   const user = await User.findById(id)
   if (user.matchs !== []) {
     for (let i of user.matchs) {
