@@ -342,6 +342,9 @@ controller.getConversationInitialized = async (req, res, next) => {
 
     }
   }
+
+
+
   if (!user) {
     res.status(500).json({
       error: "Usuario não existente",
@@ -353,6 +356,33 @@ controller.getConversationInitialized = async (req, res, next) => {
       success: true,
     });
   }
+
+
+}
+
+controller.setConversationInitialized = async(req, res, next) => {
+  const id = req.userId
+  const {matchId, conversationInitiated} = req.body
+
+    set['lastUpdate'] = Date.now()
+    console.log(set)
+    const res1 = await User.findOneAndUpdate({_id: id, matchs: {$elemMatch: {matchId: matchId}}}, {
+      $set: {'matchs.$.conversationInitiated': conversationInitiated}},
+    { new: true, runValidators: true })
+    const res2 = await User.findOneAndUpdate({_id: matchId, matchs: {$elemMatch: {matchId: id}}}, {
+      $set: {'matchs.$.conversationInitiated': conversationInitiated}},
+    { new: true, runValidators: true })  
+
+    if(res1 && res2){
+      res.status(200).json({
+        success: true,  
+    })
+  }else{
+    res.status(500).json({
+      success: false,
+    })
+  }
+
 }
 
 controller.updateUserInfo = async (req, res, next) => {
