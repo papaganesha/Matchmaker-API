@@ -448,22 +448,34 @@ controller.getUserById = async (req, res) => {
 controller.getMatchs = async (req, res) => {
   //PRA CADA MATCH, PEGAR O ID E CAPTURAR ID, FNAME, SNAME, MAINPICTURE
   var id = req.userId;
-  const data = []
+  const alreadyMessaged = []
+  const noMessaged = []
   const user = await User.findById(id)
   if (user.matchs !== []) {
     for (let i of user.matchs) {
       //console.log(i)
-      await User.findById(i.matchId)
-        .then(result => data.push({user: result, conversationInitiated: i.conversationInitiated}))
+      if(i.conversationInitiated){
+        await User.findById(i.matchId)
+        .then(result => alreadyMessaged.push(result))
         .catch((err) => {
           res.status(500).json({
             error: err,
             success: false,
           });
         });
+      }else{
+        await User.findById(i.matchId)
+        .then(result => noMessaged.push(result))
+        .catch((err) => {
+          res.status(500).json({
+            error: err,
+            success: false,
+          });
+        });
+      }
+
     }
   }
-  console.log(data)
   if (!user) {
     res.status(500).json({
       error: "Usuario não existente",
@@ -471,7 +483,7 @@ controller.getMatchs = async (req, res) => {
     });
   } else {
     res.status(200).json({
-      data: data,
+      data: {noMessaged, alreadyMessaged},
       success: true,
     });
   }
