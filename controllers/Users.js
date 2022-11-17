@@ -144,7 +144,7 @@ controller.SignIn = async (req, res) => {
 
 function checIfIsMatch(user, matchId){
   let returnVar = false
-    for(let i of user.match){
+    for(let i of user.matchs){
       if(i._id == matchId){
         returnVar = true
       }
