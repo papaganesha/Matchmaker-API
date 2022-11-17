@@ -332,7 +332,27 @@ controller.uploadPictures = async (req, res, next) => {
 controller.getConversationInitialized = async (req, res, next) => {
   const id = req.userId
   const {matchId} = req.body
-  console.log(matchId)
+  let isConversationInitialized
+  const user = await User.findById(id)
+  if (user.matchs !== []) {
+    for (let i of user.matchs) {
+      if(i._id == matchId){
+        isConversationInitialized = i.conversationInitiated
+      }
+
+    }
+  }
+  if (!user) {
+    res.status(500).json({
+      error: "Usuario não existente",
+      success: true,
+    });
+  } else {
+    res.status(200).json({
+      isConversationInitialized: isConversationInitialized,
+      success: true,
+    });
+  }
 }
 
 controller.updateUserInfo = async (req, res, next) => {
