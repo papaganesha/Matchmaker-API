@@ -329,6 +329,12 @@ controller.uploadPictures = async (req, res, next) => {
 
 }
 
+controller.getConversationInitialized = async (req, res, next) => {
+  const id = req.userId
+  const {matchId} = req.body
+  console.log(matchId)
+}
+
 controller.updateUserInfo = async (req, res, next) => {
   const id = req.userId
   let errors, checks
