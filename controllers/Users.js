@@ -367,10 +367,10 @@ controller.updateConversationInitialized = async(req, res, next) => {
     set['lastUpdate'] = Date.now()
     console.log(set)
     const res1 = await User.findOneAndUpdate({_id: id, matchs: {$elemMatch: {matchId: matchId}}}, {
-      $set: {'matchs.$.conversationInitiated': conversationInitiated}},
+      $set: {'lastUpdate': Date.now() ,'matchs.$.conversationInitiated': conversationInitiated}},
     { new: true, runValidators: true })
     const res2 = await User.findOneAndUpdate({_id: matchId, matchs: {$elemMatch: {matchId: id}}}, {
-      $set: {'matchs.$.conversationInitiated': conversationInitiated}},
+      $set: {'lastUpdate': Date.now() ,'matchs.$.conversationInitiated': conversationInitiated}},
     { new: true, runValidators: true })  
 
     if(res1 && res2){
