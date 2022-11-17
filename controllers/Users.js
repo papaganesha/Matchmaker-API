@@ -454,7 +454,7 @@ controller.getMatchs = async (req, res) => {
     for (let i of user.matchs) {
       //console.log(i)
       await User.findById(i.matchId)
-        .then(result => data.push(result))
+        .then(result => data.push({user: result, conversationInitiated: result.conversationInitiated}))
         .catch((err) => {
           res.status(500).json({
             error: err,

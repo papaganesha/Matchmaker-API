@@ -90,6 +90,7 @@ const UserSchema = new Schema({
       matchId: { type: String },
       matchDate: { type: Date, default: Date.now },
       animatedDone: { type: Boolean, default: 0 },
+      conversationInitiated: { type: Boolean, default: 0 },
     },
   ],
   pictures: {
