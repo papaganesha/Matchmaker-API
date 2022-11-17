@@ -336,7 +336,7 @@ controller.getConversationInitialized = async (req, res, next) => {
   const user = await User.findById(id)
   if (user.matchs !== []) {
     for (let i of user.matchs) {
-      if(i._id == matchId){
+      if(i.matchId == matchId){
         isConversationInitialized = i.conversationInitiated
       }
 
