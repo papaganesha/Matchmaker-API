@@ -360,7 +360,7 @@ controller.getConversationInitialized = async (req, res, next) => {
 
 }
 
-controller.setConversationInitialized = async(req, res, next) => {
+controller.updateConversationInitialized = async(req, res, next) => {
   const id = req.userId
   const {matchId, conversationInitiated} = req.body
 

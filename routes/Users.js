@@ -19,7 +19,8 @@ const {
         uploadMainPic, 
         uploadPictures, 
         getMatchs, 
-        getConversationInitialized 
+        getConversationInitialized,
+        updateConversationInitialized
 } = require('../controllers/Users')
 
 
@@ -67,6 +68,7 @@ router.put(`${apiUrl}/userupdate/:id`, isAuth, updateUser)
 
 router.put(`${apiUrl}/user`, isAuth, updateUserInfo)
 
+router.put(`${apiUrl}/conversationInitiliazed`, isAuth, updateConversationInitialized)
 
 
 router.delete(`${apiUrl}/userdelete/:id`, deleteUser)
