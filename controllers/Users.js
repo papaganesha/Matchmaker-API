@@ -364,8 +364,6 @@ controller.updateConversationInitialized = async(req, res, next) => {
   const id = req.userId
   const {matchId, conversationInitiated} = req.body
 
-    set['lastUpdate'] = Date.now()
-    console.log(set)
     const res1 = await User.findOneAndUpdate({_id: id, matchs: {$elemMatch: {matchId: matchId}}}, {
       $set: {'lastUpdate': Date.now() ,'matchs.$.conversationInitiated': conversationInitiated}},
     { new: true, runValidators: true })
