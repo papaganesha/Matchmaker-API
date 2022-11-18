@@ -93,14 +93,8 @@ const UserSchema = new Schema({
       conversationInitiated: { type: Boolean, default: 0 },
     },
   ],
-  pictures: {
-    type: Array, default: [
-      { createdAt: { type: Date, default: Date.now } }
-    ]
-  },
   mainPicture: String,
   firstLogin: { type: Boolean, default: true },
-  isVerified: { type: Boolean, default: false }
 })
 
 UserSchema.pre("save",

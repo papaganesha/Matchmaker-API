@@ -181,7 +181,7 @@ controller.getUsers = async (req, res) => {
   users.map(user => {
     console.log(checIfIsMatch(userI, user._id))
 
-    if (user._id != id) {
+    if (user._id != id && !checIfIsMatch(userI, user._id)) {
       console.log(`MY ID ${id} -- DISPLAY ID ${user._id}`)
       //&& user.interests.length > 0
       if (user.city == userI.city) {
