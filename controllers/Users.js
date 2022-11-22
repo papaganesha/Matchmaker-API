@@ -179,7 +179,6 @@ controller.getUsers = async (req, res) => {
   console.log("VOCE MESMO => ",userI.fName, userI.city, userI.gender, userI.sexOrientation)
   let data = []
   users.map(user => {
-    console.log(checIfIsMatch(userI, user._id))
 
     if (user._id != id && !checIfIsMatch(userI, user._id)) {
       console.log(`MY ID ${id} -- DISPLAY ID ${user._id}`)
