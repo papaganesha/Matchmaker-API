@@ -234,7 +234,7 @@ controller.getUsers = async (req, res) => {
               data.push(user)
             }
           }
-          if (user.gender == 1) {
+          else if (user.gender == 1) {
             if (user.sexOrientation in [1, 2]) {
               console.log("DISPLAY MULHERES BI, MULHERES GAY")
               console.log(user.fName, user.city, user.gender, user.sexOrientation)
