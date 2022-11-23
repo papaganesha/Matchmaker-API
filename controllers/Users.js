@@ -227,16 +227,18 @@ controller.getUsers = async (req, res) => {
         //USUARIA MULHER, BISSEXUAL, GENDER 1, ORIENTATION 1 => RESPOSTA GENDER 0/1/2, ORIENTATION 0/1/2
         if (userI.gender == 1 && userI.sexOrientation == 1) {
           console.log("mulher bi")
-          if (user.gender in [0, 2, 3]) {
-            console.log("DISPLAY HOMENS BI, MULHERES BI, HOMENS TRANS, MULHERES TRANS")
+          if (user.gender == 0 || user.gender == 2 || user.gender == 3) {
+            console.log("HOMEM, HOMEM TRANS, MULHER TRANS")
             if (user.sexOrientation in [0, 1]) {
+              console.log("HETEROSEXUAL, BISEXUAL")
               console.log(user.fName, user.city, user.gender, user.sexOrientation)
               data.push(user)
             }
           }
           else if (user.gender == 1) {
-            if (user.sexOrientation in [1, 2]) {
-              console.log("DISPLAY MULHERES BI, MULHERES GAY")
+            console.log("MULHER")
+            if (user.sexOrientation == 1 || user.sexOrientation == 2) {
+              console.log("BISEXUAL, GAY")
               console.log(user.fName, user.city, user.gender, user.sexOrientation)
               data.push(user)
             }
