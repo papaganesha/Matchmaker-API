@@ -145,9 +145,7 @@ controller.SignIn = async (req, res) => {
 function checIfIsMatch(user, matchId){
   let returnVar = false
     for(let i of user.matchs){
-      console.log(i)
-      if(i._id == matchId){
-        console.log("MATCH IS")
+      if(i.matchId == matchId){
         returnVar = true
       }
     }
@@ -179,7 +177,6 @@ controller.getUsers = async (req, res) => {
   console.log("VOCE MESMO => ",userI.fName, userI.city, userI.gender, userI.sexOrientation)
   let data = []
   users.map(user => {
-
     if (user._id != id && !checIfIsMatch(userI, user._id)) {
       console.log(`MY ID ${id} -- DISPLAY ID ${user._id}`)
       //&& user.interests.length > 0
