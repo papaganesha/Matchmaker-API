@@ -188,7 +188,7 @@ controller.getUsers = async (req, res) => {
           console.log("homem hetero")
           if (user.gender == 1 && user.sexOrientation in [0,1]) {
             console.log("DISPLAY MULHERES HETEROS")
-            console.log(user.fName, user.city, user.gender, user.sexOrientation)
+            console.log(user.fName)
             data.push(user) 
           }
         }
@@ -199,7 +199,7 @@ controller.getUsers = async (req, res) => {
           if (user.gender in [0, 1, 2, 3] && user.sexOrientation in [0, 1, 2]) {
             console.log("DISPLAY HOMENS, MULHERES, HOMENS TRANS, MULHERES TRANS DE TODAS ORIENTAÇÕES")
 
-            console.log(user.fName, user.city, user.gender, user.sexOrientation)
+            console.log(user.fName)
             data.push(user) 
           }
         }
@@ -209,7 +209,7 @@ controller.getUsers = async (req, res) => {
           console.log("homem gay")
           if (user.gender in [0, 2] && user.sexOrientation in [1, 2]) {
             console.log("DISPLAY HOMENS, HOMENS TRANS QUE SEJAM BI OU GAY")
-            console.log(user.fName, user.city, user.gender, user.sexOrientation)
+            console.log(user.fName)
             data.push(user) 
           }
         }
@@ -219,7 +219,7 @@ controller.getUsers = async (req, res) => {
           console.log("mulher hetero")
           if (user.gender == 0 && user.sexOrientation in [0, 1]) {
             console.log("DISPLAY HOMENS HETEROS")
-            console.log(user.fName, user.city, user.gender, user.sexOrientation)
+            console.log(user.fName)
             data.push(user) 
           }
         }
