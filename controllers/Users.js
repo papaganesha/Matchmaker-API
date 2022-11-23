@@ -196,7 +196,7 @@ controller.getUsers = async (req, res) => {
         //USUARIO HOMEM, BISSEXUAL, GENDER 0, ORIENTATION 1 => RESPOSTA GENDER 0/1/2, ORIENTATION 0/1/2
         if (userI.gender == 0 && userI.sexOrientation == 1) {
           console.log("homem bi")
-          if (user.gender in [0, 1, 2, 3] && user.sexOrientation in [0, 1, 2, 3]) {
+          if (user.gender in [0, 1, 2, 3] && user.sexOrientation in [0, 1, 2]) {
             console.log("DISPLAY HOMENS, MULHERES, HOMENS TRANS, MULHERES TRANS DE TODAS ORIENTAÇÕES")
 
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
@@ -227,7 +227,7 @@ controller.getUsers = async (req, res) => {
         //USUARIA MULHER, BISSEXUAL, GENDER 1, ORIENTATION 1 => RESPOSTA GENDER 0/1/2, ORIENTATION 0/1/2
         if (userI.gender == 1 && userI.sexOrientation == 1) {
           console.log("mulher bi")
-          if (user.gender in [0, 1, 2, 3] && user.sexOrientation in [0, 1, 2, 3]) {
+          if (user.gender in [0, 1, 2, 3] && user.sexOrientation in [1, 2, 3]) {
             console.log("DISPLAY HOMENS, MULHERES, HOMENS TRANS, MULHERES TRANS DE TODAS ORIENTAÇÕES")
 
             console.log(user.fName, user.city, user.gender, user.sexOrientation)
@@ -238,7 +238,7 @@ controller.getUsers = async (req, res) => {
         //USUARIA MULHER, HOMOSSEXUAL, GENDER 1, ORIENTATION 2 => RESPOSTA GENDER 1, ORIENTATION 1/2
         if (userI.gender == 1 && userI.sexOrientation == 2) {
           console.log("mulher lesbica")
-          if (user.gender == 1 && user.sexOrientation in [1, 2]) {
+          if (user.gender == 1 && user.sexOrientation in [1, 3]) {
             console.log("DISPLAY MULHERES, MULHERES TRANS QUE SEJAM BI OU GAY")
 
 
