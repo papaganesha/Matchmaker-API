@@ -235,35 +235,33 @@ controller.getUsers = async (req, res) => {
             }
           }
           if (user.gender == [1]) {
-            if(user.sexOrientation in [1, 2]){
+            if (user.sexOrientation in [1, 2]) {
               console.log("DISPLAY MULHERES BI, MULHERES GAY")
               data.push(user)
             }
           }
         }
 
-      }
-
-      //USUARIA MULHER, HOMOSSEXUAL, GENDER 1, ORIENTATION 2 => RESPOSTA GENDER 1, ORIENTATION 1/2
-      if (userI.gender == 1 && userI.sexOrientation == 2) {
-        console.log("mulher lesbica")
-        if (user.gender == 1 && user.sexOrientation in [1, 3]) {
-          console.log("DISPLAY MULHERES, MULHERES TRANS QUE SEJAM BI OU GAY")
-
-
-          console.log(user.fName, user.city, user.gender, user.sexOrientation)
-          data.push(user)
+        //USUARIA MULHER, HOMOSSEXUAL, GENDER 1, ORIENTATION 2 => RESPOSTA GENDER 1, ORIENTATION 1/2
+        if (userI.gender == 1 && userI.sexOrientation == 2) {
+          console.log("mulher lesbica")
+          if (user.gender == 1 && user.sexOrientation in [1, 3]) {
+            console.log("DISPLAY MULHERES, MULHERES TRANS QUE SEJAM BI OU GAY")
+            console.log(user.fName, user.city, user.gender, user.sexOrientation)
+            data.push(user)
+          }
         }
-      }
 
+      }
     }
-  }
   })
-console.log(">>> ", data)
-res.status(200).json({
-  data: data,
-  success: true,
-});
+
+
+  res.status(200).json({
+    data: data,
+    success: true,
+  })
+
 };
 
 
