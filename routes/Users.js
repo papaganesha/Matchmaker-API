@@ -6,7 +6,6 @@ const apiUrl = process.env.API_URL
 const { 
         getUsers, 
         getUserById, 
-        getUserAge, 
         SignUp, 
         SignIn, 
         getUserInterests, 
@@ -41,8 +40,6 @@ router.get(`${apiUrl}/users`, isAuth, getUsers)
 router.get(`${apiUrl}/user`, isAuth, getUserById)
 
 router.get(`${apiUrl}/matchs`, isAuth, getMatchs)
-
-router.get(`${apiUrl}/user/age`, isAuth, getUserAge)
 
 router.get(`${apiUrl}/interests`, isAuth, getUserInterests)
 
