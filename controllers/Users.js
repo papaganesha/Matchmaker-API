@@ -142,13 +142,13 @@ controller.SignIn = async (req, res) => {
 };
 
 
-function checIfIsMatch(user, matchId){
+function checIfIsMatch(user, matchId) {
   let returnVar = false
-    for(let i of user.matchs){
-      if(i.matchId == matchId){
-        returnVar = true
-      }
+  for (let i of user.matchs) {
+    if (i.matchId == matchId) {
+      returnVar = true
     }
+  }
   return returnVar
 }
 
@@ -174,7 +174,7 @@ controller.getUsers = async (req, res) => {
   //USUARIA TRANS MULHER, BISSEXUAL, GENDER 3, ORIENTATION 1 => RESPOSTA GENDER 0/1/2, ORIENTATION 0/1/2
   //USUARIA TRANS MULHER, HOMOSSEXUAL, GENDER 3, ORIENTATION 2 => RESPOSTA GENDER 1, ORIENTATION 1/2
 
-  console.log("VOCE MESMO => ",userI.fName, userI.city, userI.gender, userI.sexOrientation)
+  console.log("VOCE MESMO => ", userI.fName, userI.city, userI.gender, userI.sexOrientation)
   let data = []
   users.map(user => {
     if (user._id != id && !checIfIsMatch(userI, user._id)) {
@@ -186,10 +186,10 @@ controller.getUsers = async (req, res) => {
         //USUARIO HOMEM, HETEROSEXUAL, GENDER 0, ORIENTATION 0 => RESPOSTA GENDER 1, ORIENTATION 0
         if (userI.gender == 0 && userI.sexOrientation == 0) {
           console.log("homem hetero")
-          if (user.gender == 1 && user.sexOrientation in [0,1]) {
+          if (user.gender == 1 && user.sexOrientation in [0, 1]) {
             console.log("DISPLAY MULHERES HETEROS")
             console.log(user.fName)
-            data.push(user) 
+            data.push(user)
           }
         }
 
@@ -200,7 +200,7 @@ controller.getUsers = async (req, res) => {
             console.log("DISPLAY HOMENS, MULHERES, HOMENS TRANS, MULHERES TRANS DE TODAS ORIENTAÇÕES")
 
             console.log(user.fName)
-            data.push(user) 
+            data.push(user)
           }
         }
 
@@ -210,7 +210,7 @@ controller.getUsers = async (req, res) => {
           if (user.gender in [0, 2] && user.sexOrientation in [1, 2]) {
             console.log("DISPLAY HOMENS, HOMENS TRANS QUE SEJAM BI OU GAY")
             console.log(user.fName)
-            data.push(user) 
+            data.push(user)
           }
         }
 
@@ -220,42 +220,50 @@ controller.getUsers = async (req, res) => {
           if (user.gender == 0 && user.sexOrientation in [0, 1]) {
             console.log("DISPLAY HOMENS HETEROS")
             console.log(user.fName)
-            data.push(user) 
+            data.push(user)
           }
         }
 
         //USUARIA MULHER, BISSEXUAL, GENDER 1, ORIENTATION 1 => RESPOSTA GENDER 0/1/2, ORIENTATION 0/1/2
         if (userI.gender == 1 && userI.sexOrientation == 1) {
           console.log("mulher bi")
-          if ((user.gender in [0, 1, 3] && user.sexOrientation in [1, 2, 3]) || (user.gender in [0, 3] && user.sexOrientation in [0, 1, 2, 3])) {
+          if (user.gender in [0, 2, 3]) {
             console.log("DISPLAY HOMENS BI, MULHERES BI, HOMENS TRANS, MULHERES TRANS")
-
-            console.log(user.fName, user.city, user.gender, user.sexOrientation)
-            data.push(user) 
+            if (user.sexOrientation in [0, 1]) {
+              console.log(user.fName, user.city, user.gender, user.sexOrientation)
+              data.push(user)
+            }
           }
-          
-        }
-
-        //USUARIA MULHER, HOMOSSEXUAL, GENDER 1, ORIENTATION 2 => RESPOSTA GENDER 1, ORIENTATION 1/2
-        if (userI.gender == 1 && userI.sexOrientation == 2) {
-          console.log("mulher lesbica")
-          if (user.gender == 1 && user.sexOrientation in [1, 3]) {
-            console.log("DISPLAY MULHERES, MULHERES TRANS QUE SEJAM BI OU GAY")
-
-
-            console.log(user.fName, user.city, user.gender, user.sexOrientation)
-            data.push(user) 
+          if (user.gender == [1]) {
+            if(user.sexOrientation in [1, 2]){
+              console.log("DISPLAY MULHERES BI, MULHERES GAY")
+              data.push(user)
+            }
           }
         }
 
       }
+
+      //USUARIA MULHER, HOMOSSEXUAL, GENDER 1, ORIENTATION 2 => RESPOSTA GENDER 1, ORIENTATION 1/2
+      if (userI.gender == 1 && userI.sexOrientation == 2) {
+        console.log("mulher lesbica")
+        if (user.gender == 1 && user.sexOrientation in [1, 3]) {
+          console.log("DISPLAY MULHERES, MULHERES TRANS QUE SEJAM BI OU GAY")
+
+
+          console.log(user.fName, user.city, user.gender, user.sexOrientation)
+          data.push(user)
+        }
+      }
+
     }
+  }
   })
-  console.log(">>> ",data)
-  res.status(200).json({
-    data: data,
-    success: true,
-  });
+console.log(">>> ", data)
+res.status(200).json({
+  data: data,
+  success: true,
+});
 };
 
 
@@ -341,12 +349,12 @@ controller.uploadPictures = async (req, res, next) => {
 
 controller.getConversationInitialized = async (req, res, next) => {
   const id = req.userId
-  const {matchId} = req.body
+  const { matchId } = req.body
   let isConversationInitialized = false
   const user = await User.findById(id)
   if (user.matchs !== []) {
     for (let i of user.matchs) {
-      if(i.matchId == matchId){
+      if (i.matchId == matchId) {
         isConversationInitialized = i.conversationInitiated
       }
 
@@ -370,22 +378,24 @@ controller.getConversationInitialized = async (req, res, next) => {
 
 }
 
-controller.updateConversationInitialized = async(req, res, next) => {
+controller.updateConversationInitialized = async (req, res, next) => {
   const id = req.userId
-  const {matchId, conversationInitiated} = req.body
+  const { matchId, conversationInitiated } = req.body
 
-    const res1 = await User.findOneAndUpdate({_id: id, matchs: {$elemMatch: {matchId: matchId}}}, {
-      $set: {'lastUpdate': Date.now() ,'matchs.$.conversationInitiated': conversationInitiated}},
+  const res1 = await User.findOneAndUpdate({ _id: id, matchs: { $elemMatch: { matchId: matchId } } }, {
+    $set: { 'lastUpdate': Date.now(), 'matchs.$.conversationInitiated': conversationInitiated }
+  },
     { new: true, runValidators: true })
-    const res2 = await User.findOneAndUpdate({_id: matchId, matchs: {$elemMatch: {matchId: id}}}, {
-      $set: {'lastUpdate': Date.now() ,'matchs.$.conversationInitiated': conversationInitiated}},
-    { new: true, runValidators: true })  
+  const res2 = await User.findOneAndUpdate({ _id: matchId, matchs: { $elemMatch: { matchId: id } } }, {
+    $set: { 'lastUpdate': Date.now(), 'matchs.$.conversationInitiated': conversationInitiated }
+  },
+    { new: true, runValidators: true })
 
-    if(res1 && res2){
-      res.status(200).json({
-        success: true,  
+  if (res1 && res2) {
+    res.status(200).json({
+      success: true,
     })
-  }else{
+  } else {
     res.status(500).json({
       success: false,
     })
@@ -405,7 +415,7 @@ controller.updateUserInfo = async (req, res, next) => {
       $set: set,
     }, { new: true, runValidators: true })
       .then(result => {
-        
+
         checks++
       })
       .catch(err => {
@@ -414,18 +424,18 @@ controller.updateUserInfo = async (req, res, next) => {
         error++
       })
 
-      if(checks == req.body.length){
-        res.status(200).json({
-          message: "Update efetuado com sucesso",
-          success: true,
-        })
-      }
-      if(errors > 0){
-        res.status(500).json({
-          error: err,
-          success: false,
-        })
-      }
+    if (checks == req.body.length) {
+      res.status(200).json({
+        message: "Update efetuado com sucesso",
+        success: true,
+      })
+    }
+    if (errors > 0) {
+      res.status(500).json({
+        error: err,
+        success: false,
+      })
+    }
 
   }
 
@@ -518,24 +528,24 @@ controller.getMatchs = async (req, res) => {
   if (user.matchs !== []) {
     for (let i of user.matchs) {
       //console.log(i)
-      if(i.conversationInitiated){
+      if (i.conversationInitiated) {
         await User.findById(i.matchId)
-        .then(result => alreadyMessaged.push(result))
-        .catch((err) => {
-          res.status(500).json({
-            error: err,
-            success: false,
+          .then(result => alreadyMessaged.push(result))
+          .catch((err) => {
+            res.status(500).json({
+              error: err,
+              success: false,
+            });
           });
-        });
-      }else{
+      } else {
         await User.findById(i.matchId)
-        .then(result => noMessaged.push(result))
-        .catch((err) => {
-          res.status(500).json({
-            error: err,
-            success: false,
+          .then(result => noMessaged.push(result))
+          .catch((err) => {
+            res.status(500).json({
+              error: err,
+              success: false,
+            });
           });
-        });
       }
 
     }
@@ -547,7 +557,7 @@ controller.getMatchs = async (req, res) => {
     });
   } else {
     res.status(200).json({
-      data: {noMessaged, alreadyMessaged},
+      data: { noMessaged, alreadyMessaged },
       success: true,
     });
   }
