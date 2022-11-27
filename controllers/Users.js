@@ -68,6 +68,7 @@ controller.SignUp = async (req, res) => {
         //console.log(createdUser)
         res.status(201).json({
           message: `Cadastro realizado com sucesso`,
+          success:true
         });
         //res.status(201).json(createdUser)
       })
